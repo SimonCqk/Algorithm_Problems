@@ -42,26 +42,8 @@ Quick_Sort(A, q+1,r);
 
 using namespace std;
 
-int Partiton(int A[], int p, int r) {
-	int pivot = A[r];
-	int i = p - 1;
-	for (int j = p; j < r; ++j) {
-		if (A[j] <= pivot) { i += 1; std::swap(A[i], A[j]); }
-	}
-	std::swap(A[i + 1], A[r]);
-	return i + 1;
-}
-void Quick_Sort(int A[], int p, int r) {
-	int q;
-	if (p < r) {
-		q = Partiton(A, p, r);
-		Quick_Sort(A, p, q - 1);
-		Quick_Sort(A, q + 1, r);
-	}
-}
+
 int main() {
-	int A[] = { 9,6,3,2,5,8,7,4,1 };
-	Quick_Sort(A, 0, 9);
-	for (int i = 0; i < 9; ++i)cout << A[i];
+	
 	return 0;
 }
