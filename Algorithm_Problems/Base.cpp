@@ -12,33 +12,13 @@ int solve(int i,int m){
 	//	不适用于n较大问题，复杂度为O（2^n），或用动态规划优化
 */
 
-/*
-//	快速排序/分治法
-int Partiton(int A[], int p, int r) {
-int pivot = A[r];
-int i = p - 1;
-for (int j = p; j < r ; ++j) {
-if (A[j] <= pivot) { i += 1; std::swap(A[i], A[j]); }
-}
-std::swap(A[i + 1], A[r]);
-return i + 1;
-}
 
-void Quick_Sort(int A[], int p, int r) {
-int q;
-if (p < r) {
-q = Partiton(A, p, r);
-Quick_Sort(A, p, q - 1);
-Quick_Sort(A, q+1,r);
-}
-}
-
-*/
 #include<iostream>
 #include<algorithm>
 #include<vector>
 #include<string>
 #include<cstdio>
+#include<iterator>
 
 using namespace std;
 
