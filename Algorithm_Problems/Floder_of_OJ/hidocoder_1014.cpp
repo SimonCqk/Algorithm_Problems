@@ -1,13 +1,3 @@
-/*
-int solve(int i,int m){
-	if(m==0)return 1;
-	if(i>=n)return 0;
-	int result=solve(i+1,m)||solve(i+1,m-A[i]);
-	return result;
-	}
-	//	
-*/
-
 
 #include<iostream>
 #include<algorithm>
@@ -22,7 +12,7 @@ typedef struct Trie_Tree
 	unsigned int value;
 	char  key;
 	struct Trie_Tree* child[CHILD_MAX];
-	Trie_Tree():value(0){
+	Trie_Tree() :value(0) {
 		int i;
 		for (i = 0; i < CHILD_MAX; ++i)child[i] = nullptr;
 	}
@@ -31,10 +21,10 @@ typedef struct Trie_Tree
 
 
 void Insert_Tree(TrieTree* TREE, const string s) {
-	TrieTree* T=TREE;
+	TrieTree* T = TREE;
 	string::const_iterator beg = s.cbegin(), ed = s.cend();
-	if (!*beg||!T)return;
-	while (beg!=ed) {
+	if (!*beg || !T)return;
+	while (beg != ed) {
 		if (T->child[*beg - 'a'] == nullptr) {
 			T->child[*beg - 'a'] = new TrieTree();
 			T->child[*beg - 'a']->key = *beg;
@@ -50,14 +40,14 @@ void Insert_Tree(TrieTree* TREE, const string s) {
 	}
 }
 
-unsigned int Query_value(TrieTree* TREE,string s) {
+unsigned int Query_value(TrieTree* TREE, string s) {
 	TrieTree* Tp = TREE;
-	string::const_iterator item = s.cbegin(),ed=s.cend();
-	while ( item!=ed) {
+	string::const_iterator item = s.cbegin(), ed = s.cend();
+	while (item != ed) {
 		if (Tp->child[*(item)-'a'] == nullptr)return 0;
-		Tp = Tp->child[*(item++)-'a'];
+		Tp = Tp->child[*(item++) - 'a'];
 	}
-	
+
 	return Tp->value;
 }
 
@@ -65,10 +55,10 @@ unsigned int Query_value(TrieTree* TREE,string s) {
 
 int main() {
 	TrieTree* TREE = new TrieTree();
-	int dic_size,get_size;
+	int dic_size, get_size;
 	cin >> dic_size;
-	string s,query_s;
-	for (int i = 0; i < dic_size;++i) {
+	string s, query_s;
+	for (int i = 0; i < dic_size; ++i) {
 		cin >> s;
 		Insert_Tree(TREE, s);
 	}
@@ -76,7 +66,7 @@ int main() {
 	unsigned int get_value;
 	for (int i = 0; i < get_size; ++i) {
 		cin >> query_s;
-		get_value= Query_value(TREE,query_s);
+		get_value = Query_value(TREE, query_s);
 		cout << get_value << endl;
 	}
 	delete TREE;
@@ -84,7 +74,7 @@ int main() {
 }
 
 /*
-//version of : char[20]  ->  string 
+//version of : char[20]  ->  string
 #include<iostream>
 #include<algorithm>
 #include<string>
