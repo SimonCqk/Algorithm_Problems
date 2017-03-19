@@ -9,8 +9,8 @@
  */
 //递归版本
 TreeNode* inverse(TreeNode* root){  
-    if(root==NULL)  
-        return NULL;  
+    if(root==nullptr)  
+        return nullptr;  
   
     TreeNode* pNode = root->left;  
     root->left = inverse(root->right);  
@@ -23,8 +23,8 @@ TreeNode* inverse(TreeNode* root){
 class Solution {
 public:
     TreeNode* invertTree(TreeNode* root) {
-    if(root==NULL)  
-        return NULL;  
+    if(root==nullptr)  
+        return nullptr;  
   
     queue<TreeNode*> que;  
     que.push(root);  
