@@ -46,6 +46,7 @@ int main() {
 	for (int i = 0; i < n; ++i) {
 		cin >> item; length.push_back(item);
 	}
+	
 	return 0;
 }
 
