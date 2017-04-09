@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="NetEase_2017.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Base.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
