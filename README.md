@@ -11,5 +11,5 @@
 - [Floder_of_recruit](Algorithm_Problems/Floder_of_recruit)
 
                                                                   
->By CQK from 2017 ...<br>  
+>By CQK -> 2017 ...<br>  
                                                            
