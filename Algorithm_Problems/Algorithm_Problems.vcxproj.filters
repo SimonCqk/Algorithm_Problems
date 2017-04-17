@@ -18,5 +18,11 @@
     <ClCompile Include="Base.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="LegendaryItems.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DiligentRobots.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
