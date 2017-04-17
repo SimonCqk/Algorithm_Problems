@@ -7,9 +7,9 @@
 * <"Talk is cheap,show me your code.">
 
 - [Floder of OJ](Algorithm_Problems/Floder_of_OJ)
-- [Floder_of_classic](Algorithm_Problems/Floder_of_classic)
-- [Floder_of_recruit](Algorithm_Problems/Floder_of_recruit)
+- [Floder_of_Classic](Algorithm_Problems/Floder_of_classic)
+- [Floder_of_Recruit](Algorithm_Problems/Floder_of_recruit)
 
                                                                   
->By CQK from 2017 ...<br>  
+>By CQK -> 2017 ...<br>  
                                                            
