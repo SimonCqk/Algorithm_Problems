@@ -18,8 +18,8 @@
     <ClCompile Include="Base.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Floder_Of_OJ\Leetcode\JumpGame.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\README.md" />
   </ItemGroup>
 </Project>
