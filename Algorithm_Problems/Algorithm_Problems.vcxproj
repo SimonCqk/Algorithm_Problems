@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Base.cpp" />
+    <ClCompile Include="Floder_Of_Classic\Trees\BalancedBinaryTree.cpp" />
     <ClCompile Include="Floder_Of_OJ\Leetcode\ValidParentheses.cpp" />
   </ItemGroup>
   <ItemGroup>

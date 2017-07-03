@@ -41,10 +41,10 @@ int main() {
 	int s_size = s.size();
 	for (int i = 0; i < s_size; ++i) {
 		memset(remain, 0, sizeof(remain));
-		for (int j = 0; j < n; j++) {       //这一位所能取的余数的可能性
+		for (int j = 0; j < n; j++) {       //这一位所能取的余数的可能性（0...n-1）
 			for (int k = 0; k < 10; k++) {    //这一位能取的数，当然是0~9啦
 				if (isdigit(s[i]) && s[i] - '0' != k) continue;
-				//isdigit->判断是否为0~9的数字
+				//isdigit 判断是否为0~9的数字
 				//若该位为k,则计算所有可能取值，否则只计算这一种取值
 				remain[((j * 10) + k) % n] += sync[j];
 				//计算当前值和前一位余数的取值组合产生的余数
