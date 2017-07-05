@@ -37,7 +37,7 @@ class AVLTree {
 	using TType = TreeNode<Type>;
 public:
 	AVLTree() :
-		root(new TType()) {}
+		root(make_shared<TType>()) {}
 	~AVLTree() = default;
 	//创建二叉平衡树
 	void createAVLTree(const vector<Type>& data);
@@ -147,7 +147,7 @@ shared_ptr<TreeNode<Type>> AVLTree<Type>::doubleLeftRotate(TNode node)
 template<typename Type>
 shared_ptr<TreeNode<Type>> AVLTree<Type>::insertNode(TNode node, const Type& value)
 {
-	TNode newNode = make_shared<TType>(new TType());
+	TNode newNode = make_shared<TType>(TType());
 	newNode->data = value;
 	if (!node.get()) {
 		node = newNode;
