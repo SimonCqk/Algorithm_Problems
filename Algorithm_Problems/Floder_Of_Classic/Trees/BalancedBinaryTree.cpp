@@ -23,13 +23,12 @@ template<typename Type>
 class TreeNode {
 public:
 	TreeNode() :
-		height(1), leftChild(nullptr),rightChild(nullptr) {}
+		height(1), leftChild(nullptr), rightChild(nullptr) {}
 	Type data;
 	size_t height;
 	shared_ptr<TreeNode> leftChild;
 	shared_ptr<TreeNode> rightChild;
 };
-
 
 template<typename Type>
 class AVLTree {
@@ -37,7 +36,7 @@ class AVLTree {
 	using TType = TreeNode<Type>;
 public:
 	AVLTree() :
-		root(make_shared<TType>()) {}
+		root(nullptr) {}
 	~AVLTree() = default;
 	//创建二叉平衡树
 	void createAVLTree(const vector<Type>& data);
@@ -50,12 +49,11 @@ public:
 	//前序遍历输出树
 	void preOrdered(TNode node);
 	//返回最大值的节点
-	TNode maxNode();
+	TNode maxNode(TNode node);
 	//返回最小值节点
-	TNode minNode();
-private:
+	TNode minNode(TNode node);
 	TNode root;  //根节点
-
+private:
 	size_t getHeight(TNode node);  //返回树的高度
 	void setHeight(TNode node, const size_t& newheight);  //设置树的高度
 
@@ -70,7 +68,6 @@ private:
 	TNode doubleLeftRotate(TNode);
 
 };
-
 
 template<typename Type>
 inline size_t AVLTree<Type>::getHeight(TNode node)
@@ -210,9 +207,9 @@ void AVLTree<Type>::createAVLTree(const vector<Type>& data)
 		root = nullptr;
 		return;
 	}
-	for (auto i = data.cbegin(); i != data.cend(); ++i)
+	for (auto& i : data)
 	{
-		root = insertNode(root, (*i));
+		root = insertNode(root, i);
 	}
 }
 
@@ -238,13 +235,13 @@ shared_ptr<TreeNode<Type>> AVLTree<Type>::searchNode(TNode node, const Type& val
 }
 
 template<typename Type>
-shared_ptr<TreeNode<Type>> AVLTree<Type>::minNode()
+shared_ptr<TreeNode<Type>> AVLTree<Type>::minNode(TNode node)
 {
 	if (!root.get())
 	{
 		return nullptr;
 	}
-	TNode temp = root;
+	TNode temp = node;
 	while ((*temp).leftChild)
 	{
 		temp = (*temp).leftChild;
@@ -253,13 +250,13 @@ shared_ptr<TreeNode<Type>> AVLTree<Type>::minNode()
 }
 
 template<typename Type>
-shared_ptr<TreeNode<Type>> AVLTree<Type>::maxNode()
+shared_ptr<TreeNode<Type>> AVLTree<Type>::maxNode(TNode node)
 {
 	if (!root.get())
 	{
 		return nullptr;
 	}
-	TNode temp = root;
+	TNode temp = node;
 	while ((*temp).rightChild)
 	{
 		temp = (*temp).rightChild;
@@ -270,10 +267,15 @@ shared_ptr<TreeNode<Type>> AVLTree<Type>::maxNode()
 template<typename Type>
 void AVLTree<Type>::preOrdered(TNode node)
 {
-	if (!node.get())cout << "Empty Tree !" << std::endl;
+	if (!root.get())
+	{
+		cout << "Empty Tree ." << endl;
+		return;
+	}
+	if (!node.get())cout << " Null ";
 	else
 	{
-		cout << node->data << " ";
+		cout << node->data << " - ";
 		preOrdered((*node).leftChild);
 		preOrdered((*node).rightChild);
 	}
@@ -369,21 +371,23 @@ shared_ptr<TreeNode<Type>> AVLTree<Type>::deleteNode(TNode node, const Type& val
 
 int main()
 {
-	cout << "Please INPUT the numbers of datas and exact datas . " << endl;
-	size_t DataSize; 
-	int item;
-	cin >> DataSize;
-	vector<int> datas;
-	for (size_t i = 0; i < DataSize; ++i)
-	{
-		cin >> item;
-		datas.push_back(item);
-	}
+	vector<int> datas = { 2,67,5,3,22,112,78,54,4};
 	AVLTree<int> TREE;
 	TREE.createAVLTree(datas);
 	cout << "先序遍历结果如下 ." << endl;
-	//TREE.preOrdered();
-	cout << endl;
-
+	TREE.preOrdered(TREE.root);
+	cout << "树中最大元素/最小元素" << endl;
+	cout << TREE.maxNode(TREE.root)->data << " / " << TREE.minNode(TREE.root)->data << endl;
+	cout << "删除值为4的节点后，先序遍历结果 ." << endl;
+	TREE.root=TREE.deleteNode(TREE.root, 4);
+	TREE.preOrdered(TREE.root);
+	cout << "查找值为112的结点" << endl;
+	TreeNode<int> *node = &(*(TREE.searchNode(TREE.root, 112)));
+	if (node)
+	{
+		cout << "Search the node successfully ." << endl;
+	}
+	else
+		cout << "Search failed ." << endl;
 	return 0;
 }
