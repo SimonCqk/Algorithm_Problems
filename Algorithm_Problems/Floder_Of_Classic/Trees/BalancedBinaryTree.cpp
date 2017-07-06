@@ -2,7 +2,6 @@
 Balanced Binary Tree (Adelson-Velskii-Landis Tree)
 Based on the Binary Search Tree
 */
-// http://blog.csdn.net/xiajun07061225/article/details/8292505
 #include<iostream>
 #include<memory>
 #include<vector>
