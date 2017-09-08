@@ -370,7 +370,7 @@ shared_ptr<TreeNode<Type>> AVLTree<Type>::deleteNode(TNode node, const Type& val
 
 int main()
 {
-	vector<int> datas = { 2,67,5,3,22,112,78,54,4};
+	vector<int> datas = { 2,67,5,3,22,112,78,54,4,1,0 };
 	AVLTree<int> TREE;
 	TREE.createAVLTree(datas);
 	cout << "先序遍历结果如下 ." << endl;
@@ -378,7 +378,7 @@ int main()
 	cout << "树中最大元素/最小元素" << endl;
 	cout << TREE.maxNode(TREE.root)->data << " / " << TREE.minNode(TREE.root)->data << endl;
 	cout << "删除值为4的节点后，先序遍历结果 ." << endl;
-	TREE.root=TREE.deleteNode(TREE.root, 4);
+	TREE.root = TREE.deleteNode(TREE.root, 4);
 	TREE.preOrdered(TREE.root);
 	cout << "查找值为112的结点" << endl;
 	TreeNode<int> *node = &(*(TREE.searchNode(TREE.root, 112)));
