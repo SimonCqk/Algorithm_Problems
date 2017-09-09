@@ -1,8 +1,6 @@
-// Matrix Chain Multiplication solution
 #include<iostream>
 #include<vector>
 #include<algorithm>
-#include<array>
 using namespace std;
 
 const int INFTY = (1 << 20);
@@ -13,10 +11,7 @@ int solve(const vector< int>& mats) {
 	/* mul_res[i,j] = Minimum number of scalar multiplications needed
 	to compute the matrix A[i]A[i+1]...A[j] = A[i..j] where
 	dimension of A[i] is p[i-1] x p[i] */
-	array<array<int, 500>, 500> mul_res;
-	for (auto &item : mul_res) {
-		item.fill(0);
-	}
+	vector<vector<int>> mul_res(num + 1, vector<int>(num + 1, 0));
 	for (int n = 2; n <= num; ++n) //n is the number of matrix under multiplication
 		for (int i = 1; i <= num - n + 1; ++i) {
 			int j = i + n - 1;
