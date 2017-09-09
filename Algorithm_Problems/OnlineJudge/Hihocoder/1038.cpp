@@ -6,8 +6,8 @@
 using namespace std;
 
 /*
-//二维数组版本
-//int Best[MAX_Gift][MAX_Coupon]
+ 二维数组版本 
+int Best[MAX_Gift][MAX_Coupon]
 int Solve(int Gift_num, int Coupon_num, long long  Need[], int Value[], int Best[][MAX_Coupon]) {
 	int i, j;
 	for (j = 0; j < Coupon_num; ++j)Best[0][j] = 0;
