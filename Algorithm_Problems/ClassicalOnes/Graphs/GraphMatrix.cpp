@@ -3,14 +3,13 @@
 
 
 GraphMatrix::GraphMatrix(const size_t & size)
+	:size(size),number_of_edges(0)
 {
 	assert(size > 0);
 	matrix.resize(size);
 	for (auto &vec : matrix) {
 		vec.resize(size, 0);
 	}
-	this->size = size;
-	this->number_of_edges = 0;
 }
 
 GraphMatrix::GraphMatrix(const vector<Edge>& edges)
