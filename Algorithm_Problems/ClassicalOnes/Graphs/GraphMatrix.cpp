@@ -33,6 +33,7 @@ GraphMatrix::~GraphMatrix()
 
 vector<double> & GraphMatrix::operator[](const int & idx)
 {
+	++number_of_edges;
 	return matrix[idx];
 }
 
