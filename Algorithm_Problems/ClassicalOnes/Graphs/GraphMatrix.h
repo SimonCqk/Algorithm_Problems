@@ -6,13 +6,13 @@
 using std::vector;
 using std::map;
 
-class Edge final
+class Node final
 {
 	friend class GraphMatrix;
 public:
-	explicit Edge(const size_t& start, const size_t& end, const double& value)
+	explicit Node(const size_t& start, const size_t& end, const double& value)
 		:start_idx(start), end_idx(end), value(value) {}
-	~Edge() = default;
+	~Node() = default;
 private:
 	size_t start_idx;
 	size_t end_idx;
@@ -23,21 +23,20 @@ class GraphMatrix
 {
 public:
 	explicit GraphMatrix(const size_t& size);
-	explicit GraphMatrix(const vector<Edge>& edges);
+	explicit GraphMatrix(const vector<Node>& nodes);
 	~GraphMatrix();
 	void showAll() const;
-	size_t getSize() const;
-	size_t getNumOfEdges() const;
+	size_t getNumOfNodes() const;
 	double getValue(const size_t& start, const size_t& end) const;
+	auto findNode(const size_t& start, const size_t& end) const;
+	int getNodeDegree(const size_t& start) const;
 
-	void addEdge(const size_t& start, const size_t& end, const double& value);
-	void addEdge(const Edge& edge);
-	void removeEdge(const size_t& start, const size_t& end);
-	void removeEdge(const Edge& edge);
+	void addNode(const size_t& start, const size_t& end, const double& value);
+	void addNode(const Node& edge);
+	void removeNode(const size_t& start, const size_t& end);
+	void removeNode(const Node& node);
 private:
 	vector<vector<double>> matrix;
-	map<int, vector<int>> neighbor_table;
-	size_t size;
-	size_t number_of_edges;
+	vector<Node> nodes;
 };
 
