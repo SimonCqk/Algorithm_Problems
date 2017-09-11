@@ -1,8 +1,10 @@
 #pragma once
 #include<vector>
 #include<iostream>
+#include<map>
 
 using std::vector;
+using std::map;
 
 class Edge final
 {
@@ -23,12 +25,10 @@ public:
 	explicit GraphMatrix(const size_t& size);
 	explicit GraphMatrix(const vector<Edge>& edges);
 	~GraphMatrix();
-	vector<double>& operator[](const int& idx);
 	void showAll() const;
 	size_t getSize() const;
 	size_t getNumOfEdges() const;
 	double getValue(const size_t& start, const size_t& end) const;
-	double getValue(const Edge& edge) const;
 
 	void addEdge(const size_t& start, const size_t& end, const double& value);
 	void addEdge(const Edge& edge);
@@ -36,6 +36,7 @@ public:
 	void removeEdge(const Edge& edge);
 private:
 	vector<vector<double>> matrix;
+	map<int, vector<int>> neighbor_table;
 	size_t size;
 	size_t number_of_edges;
 };
