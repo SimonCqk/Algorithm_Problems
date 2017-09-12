@@ -1,42 +1,59 @@
 #pragma once
 #include<vector>
 #include<iostream>
-#include<map>
 
 using std::vector;
-using std::map;
 
-class Node final
+enum class Flags
 {
-	friend class GraphMatrix;
+	unvisited,
+	be_visiting,
+	visited
+};
+class Edge final
+{
+	friend class Graph;
 public:
-	explicit Node(const size_t& start, const size_t& end, const double& value)
+	explicit Edge(const size_t& start, const size_t& end=0, const double& value=0)
 		:start_idx(start), end_idx(end), value(value) {}
-	~Node() = default;
+	Flags getFlag() const { return flag; }
+	void setFlag(const Flags& f) { flag = f; }
+	size_t getEnd() const { return end_idx; }
+	size_t getValue() const { return value; }
+	~Edge() = default;
 private:
 	size_t start_idx;
 	size_t end_idx;
 	double value;
+	Flags flag;
 };
 
-class GraphMatrix
+class Graph
 {
 public:
-	explicit GraphMatrix(const size_t& size);
-	explicit GraphMatrix(const vector<Node>& nodes);
-	~GraphMatrix();
-	void showAll() const;
+	Graph():
+		num_edges(0){}
+	explicit Graph(const size_t& size);
+	~Graph()=default;
+	void showAdjMatrix() const;
+	vector<vector<int>> getAdjMartix() const;
 	size_t getNumOfNodes() const;
-	double getValue(const size_t& start, const size_t& end) const;
-	auto findNode(const size_t& start, const size_t& end) const;
-	int getNodeDegree(const size_t& start) const;
+	size_t getNumOfEdges() const;
+	size_t getDegreeIn(const size_t& vertex_idx) const;
+	size_t getDegreeOut(const size_t& vertex_idx) const;
+	size_t getDegree(const size_t& vertex_idx) const;
 
-	void addNode(const size_t& start, const size_t& end, const double& value);
-	void addNode(const Node& edge);
-	void removeNode(const size_t& start, const size_t& end);
-	void removeNode(const Node& node);
+	auto findEdge(const size_t& vertex_idx, const size_t& end) const; // return iterator points to the specific edge.
+
+	void addEdge(const size_t& vertex_idx, const size_t& end, const double& value);
+	void addEdge(const Edge& edge);
+	void removeEdge(const size_t& vertex_idx, const size_t& end);
+	void removeEdge(const Edge& edge);
+
+	void DFS() const;
 private:
-	vector<vector<double>> matrix;
-	vector<Node> nodes;
+	vector<vector<Edge>> vertexs;
+	size_t num_edges;
+	void DFS_visit();
 };
 
