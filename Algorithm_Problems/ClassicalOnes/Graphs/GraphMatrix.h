@@ -6,8 +6,10 @@
 #include<iostream>
 #include<algorithm>
 #include<cassert>
+#include<stack>
 
 using std::vector;
+using std::stack;
 using std::cin;
 using std::cout;
 using std::endl;
@@ -16,18 +18,18 @@ enum class Flags
 {
 	unvisited,
 	be_visiting,
-	visited
+	visited,
+	finish_visit
 };
 
 template<typename Type>
 class Edge final
 {
+	template<typename Type>
 	friend class Graph;
 public:
 	explicit Edge(const size_t& start, const size_t& end = 0, const Type& value = Type())
 		:start_idx(start), end_idx(end), value(value) {}
-	Flags getFlag() const { return flag; }
-	void setFlag(const Flags& f) { flag = f; }
 	size_t getEnd() const { return end_idx; }
 	size_t getValue() const { return value; }
 	~Edge() = default;
@@ -35,7 +37,6 @@ private:
 	size_t start_idx;
 	size_t end_idx;
 	Type value;
-	Flags flag;
 };
 
 template<typename Type>
@@ -56,17 +57,18 @@ public:
 	Type getVertexValue(const size_t& vertex_idx) const;
 
 	// return iterator points to the specific edge.
-	decltype(auto) findEdge(const size_t& vertex_idx, const size_t& end) const; 
+	decltype(auto) findEdge(const size_t& vertex_idx, const size_t& end) const;
 
-	void addEdge(const size_t& vertex_idx, const size_t& end, const double& value);
-	void addEdge(const size_t& vertex_idx, const Edge& edge);
+	void addEdge(const size_t& vertex_idx, const size_t& end, const Type& value);
+	//void addEdge(const size_t& vertex_idx, const Edge& edge);
 	void removeEdge(const size_t& vertex_idx, const size_t& end);
 
 	void DFS() const;
 private:
 	vector<vector<Edge<Type>>> vertexs;
+	vector<Flags> flags; // corresponding to the states of vertexs.
 	size_t num_edges;
-	void DFS_visit();
+	void DFS_visit(const int& idx);
 };
 
 template<typename Type>
@@ -75,12 +77,13 @@ inline Graph<Type>::Graph(const size_t & size)
 {
 	assert(size > 0);
 	vertexs.resize(size);
+	flags.resize(size, Flags::unvisited);
 }
 
 template<typename Type>
 inline void Graph<Type>::showAdjMatrix() const
 {
-	vector<vector<int>> matrix= getAdjMatrix();
+	vector<vector<int>> matrix = getAdjMatrix();
 	for (const auto& i : matrix) {
 		for (const auto& j : i)
 			cout << j << " ";
@@ -92,7 +95,7 @@ template<typename Type>
 inline vector<vector<int>> Graph<Type>::getAdjMatrix() const
 {
 	int size = vertexs.size();
-	vector<vector<int>> matrix(size, vector<int>(size,0));
+	vector<vector<int>> matrix(size, vector<int>(size, 0));
 	int i = 0;
 	for (const auto& vertex : vertexs) {
 		for (const auto& item : vertex) {
@@ -134,7 +137,7 @@ inline size_t Graph<Type>::getDegreeIn(const size_t & vertex_idx) const
 template<typename Type>
 inline size_t Graph<Type>::getDegreeOut(const size_t & vertex_idx) const
 {
-	assert(vertex_idx > 0 && vertex_idx < vertexs.size());
+	assert(vertex_idx >= 0 && vertex_idx < vertexs.size());
 	return vertexs[vertex_idx].size();
 }
 
@@ -159,9 +162,7 @@ inline Type Graph<Type>::getVertexValue(const size_t & vertex_idx) const
 template<typename Type>
 inline decltype(auto) Graph<Type>::findEdge(const size_t & vertex_idx, const size_t & end) const
 {
-	assert(vertex_idx > 0 && end > 0);
-	if (vertex_idx > vertexs.size())
-		vertexs.resize(vertex_idx + 1);
+	assert(vertex_idx >= 0 && end >= 0);
 	auto beg = vertexs[vertex_idx].begin(), ed = vertexs[vertex_idx].end();
 	for (; beg != ed; ++beg) {
 		if (beg->end_idx == end)
@@ -171,23 +172,27 @@ inline decltype(auto) Graph<Type>::findEdge(const size_t & vertex_idx, const siz
 }
 
 template<typename Type>
-inline void Graph<Type>::addEdge(const size_t & vertex_idx, const size_t & end, const double & value)
+inline void Graph<Type>::addEdge(const size_t & vertex_idx, const size_t & end, const Type & value)
 {
-	assert(vertex_idx > 0 && end > 0);
-	if (vertex_idx > vertexs.size() || end > vertexs.size())
-		vertexs.resize(max(vertex_idx,end) + 1);
+	assert(vertex_idx >= 0 && end >= 0 && vertex_idx != end);
+	if (vertex_idx > vertexs.size() || end > vertexs.size()) {
+		vertexs.resize(max(vertex_idx, end) + 1);
+		for (size_t i = 0; i < vertex_idx - vertexs.size(); ++i)
+			flags.push_back(Flags::unvisited);
+	}
 	if (vertexs[vertex_idx].size() != 0 && value != vertexs[vertex_idx][0].value) {
 		cout << "Invalid Input value." << endl;
-		exit();
+		exit(0);
 	}
-	vertexs[vertex_idx].push_back(Edge(vertex_idx, end, value));
+	vertexs[vertex_idx].push_back(Edge<Type>(vertex_idx, end, value));
 	++num_edges;
 }
 
+/*
 template<typename Type>
 inline void Graph<Type>::addEdge(const size_t & vertex_idx, const Edge<Type> & edge)
 {
-	if (vertex_idx != edge.start_idx) {
+	if (vertex_idx != edge.start_idx || vertex_idx == edge.end_idx) {
 		cout << "Invalid Edge." << endl;
 		return;
 	}
@@ -195,17 +200,58 @@ inline void Graph<Type>::addEdge(const size_t & vertex_idx, const Edge<Type> & e
 		cout << "Invalid Input value." << endl;
 		exit();
 	}
-	if (vertex_idx > vertexs.size())
+	if (vertex_idx > vertexs.size()) {
 		vertexs.resize(vertex_idx + 1);
+		for (int i = 0; i < vertex_idx - vertexs.size(); ++i)
+			flags.push_back(Flags::unvisited);
+	}
 	vertexs[vertex_idx].push_back(edge);
 	++num_edges;
 }
-
+*/
 template<typename Type>
 inline void Graph<Type>::removeEdge(const size_t & vertex_idx, const size_t & end)
 {
 	assert(vertex_idx < vertexs.size() && end < vertexs.size());
 	auto candi = findEdge(vertex_idx, end);
-	if(candi!=vertexs[vertex_idx])
+	if (candi != vertexs[vertex_idx])
 		vertexs[vertex_idx].erase(candi);
+}
+
+template<typename Type>
+inline void Graph<Type>::DFS() const
+{
+	cout << "Path is :";
+	int size = vertexs.size();
+	for (int i = 0; i < size; ++i) {
+		if (flags[i] == Flags::unvisited)
+			DFS_visit(i);
+	}
+	cout << endl;
+}
+
+template<typename Type>
+inline void Graph<Type>::DFS_visit(const int& idx)
+{
+	stack<Edge<Type>> stack;
+	stack.push(vertexs[idx]);
+	flags[idx] = Flags::be_visiting;
+	int next_idx = 0; // next edge in vertexs[i].
+	while (!stack.empty()) {
+		vector<Edge>& vec = stack.top();
+		int next_vert = vec[next_idx].end_idx;
+		if (vertexs[next_vert].size() != 0) {
+			if (flags[next_vert] == Flags::unvisited) {
+				flags[next_vert] = Flags::be_visiting;
+				stack.push(vertexs[next_vert]);
+				cout << next_vert << " ";
+				++next_idx;
+			}
+		}
+		else {
+			stack.pop();
+			flags[next_vert] = Flags::visited;
+			next_idx = 0;
+		}
+	}
 }
