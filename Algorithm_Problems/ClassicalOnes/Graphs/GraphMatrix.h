@@ -30,7 +30,7 @@ class Edge final
 
 public:
 	explicit Edge(const size_t& start, const size_t& end = 0, const Type& value = Type())
-		:start_idx(start), end_idx(end), value(value) {}
+		:start_idx(start), end_idx(end), value(value),flag(Flags::unvisited) {}
 	size_t getEnd() const { return end_idx; }
 	size_t getValue() const { return value; }
 	~Edge() = default;
@@ -38,6 +38,7 @@ private:
 	size_t start_idx;
 	size_t end_idx;
 	Type value;
+	Flags flag; // search for next_edge unvisied edge.
 };
 
 template<typename Type>
@@ -70,7 +71,7 @@ private:
 	vector<Flags> flags; // corresponding to the states of vertexs.
 	size_t num_edges;
 	void DFS_visit(const int& idx);
-	int next(Node& node);
+	int next_edge(const int& idx);
 };
 
 template<typename Type>
@@ -214,31 +215,31 @@ inline void Graph<Type>::DFS()
 template<typename Type>
 inline void Graph<Type>::DFS_visit(const int& idx)
 {
-	stack<Node> stack;
-	stack.push(vertexs[idx]);
+	stack<int> stack;
+	stack.push(idx);  // push the index of node into stack, instead of the origin node.
 	flags[idx] = Flags::be_visiting;
 	while (!stack.empty()) {
-		Node& node = stack.top();
-		int next_vert = next(node);
+		int node = stack.top();
+		int next_vert = next_edge(node);
 		if (next_vert != -1) {
 			if (flags[next_vert] == Flags::unvisited) {
 				flags[next_vert] = Flags::be_visiting;
-				stack.push(vertexs[next_vert]);
+				stack.push(next_vert);
 				cout << next_vert << " ";
 			}
 		}
 		else {
 			stack.pop();
-			flags[] = Flags::visited;
+			flags[node] = Flags::visited;
 		}
 
 	}
 }
 
 template<typename Type>
-inline int Graph<Type>::next(Node& node)
+inline int Graph<Type>::next_edge(const int& idx)
 {
-	for (auto& i : node) {
+	for (auto& i : vertexs[idx]) {
 		if (i.flag == Flags::unvisited) {
 			i.flag = Flags::finish_visit;
 			return i.end_idx;
