@@ -60,7 +60,6 @@ public:
 	decltype(auto) findEdge(const size_t& vertex_idx, const size_t& end) const;
 
 	void addEdge(const size_t& vertex_idx, const size_t& end, const Type& value);
-	//void addEdge(const size_t& vertex_idx, const Edge& edge);
 	void removeEdge(const size_t& vertex_idx, const size_t& end);
 
 	void DFS() const;
@@ -188,27 +187,6 @@ inline void Graph<Type>::addEdge(const size_t & vertex_idx, const size_t & end, 
 	++num_edges;
 }
 
-/*
-template<typename Type>
-inline void Graph<Type>::addEdge(const size_t & vertex_idx, const Edge<Type> & edge)
-{
-	if (vertex_idx != edge.start_idx || vertex_idx == edge.end_idx) {
-		cout << "Invalid Edge." << endl;
-		return;
-	}
-	if (vertexs[vertex_idx].size() != 0 && edge.value != vertexs[vertex_idx][0].value) {
-		cout << "Invalid Input value." << endl;
-		exit();
-	}
-	if (vertex_idx > vertexs.size()) {
-		vertexs.resize(vertex_idx + 1);
-		for (int i = 0; i < vertex_idx - vertexs.size(); ++i)
-			flags.push_back(Flags::unvisited);
-	}
-	vertexs[vertex_idx].push_back(edge);
-	++num_edges;
-}
-*/
 template<typename Type>
 inline void Graph<Type>::removeEdge(const size_t & vertex_idx, const size_t & end)
 {
