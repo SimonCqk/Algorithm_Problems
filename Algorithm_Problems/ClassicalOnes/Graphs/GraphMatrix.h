@@ -27,6 +27,7 @@ class Edge final
 {
 	template<typename Type>
 	friend class Graph;
+
 public:
 	explicit Edge(const size_t& start, const size_t& end = 0, const Type& value = Type())
 		:start_idx(start), end_idx(end), value(value) {}
@@ -42,6 +43,7 @@ private:
 template<typename Type>
 class Graph
 {
+	using Node = vector<Edge<Type>>;
 public:
 	Graph() :
 		num_edges(0) {}
@@ -62,12 +64,13 @@ public:
 	void addEdge(const size_t& vertex_idx, const size_t& end, const Type& value);
 	void removeEdge(const size_t& vertex_idx, const size_t& end);
 
-	void DFS() const;
+	void DFS();
 private:
-	vector<vector<Edge<Type>>> vertexs;
+	vector<Node> vertexs;
 	vector<Flags> flags; // corresponding to the states of vertexs.
 	size_t num_edges;
 	void DFS_visit(const int& idx);
+	int next(Node& node);
 };
 
 template<typename Type>
@@ -197,9 +200,9 @@ inline void Graph<Type>::removeEdge(const size_t & vertex_idx, const size_t & en
 }
 
 template<typename Type>
-inline void Graph<Type>::DFS() const
+inline void Graph<Type>::DFS()
 {
-	cout << "Path is :";
+	cout << "Path is [always start from root index-0] : 0 ";
 	int size = vertexs.size();
 	for (int i = 0; i < size; ++i) {
 		if (flags[i] == Flags::unvisited)
@@ -211,25 +214,35 @@ inline void Graph<Type>::DFS() const
 template<typename Type>
 inline void Graph<Type>::DFS_visit(const int& idx)
 {
-	stack<Edge<Type>> stack;
+	stack<Node> stack;
 	stack.push(vertexs[idx]);
 	flags[idx] = Flags::be_visiting;
-	int next_idx = 0; // next edge in vertexs[i].
 	while (!stack.empty()) {
-		vector<Edge>& vec = stack.top();
-		int next_vert = vec[next_idx].end_idx;
-		if (vertexs[next_vert].size() != 0) {
+		Node& node = stack.top();
+		int next_vert = next(node);
+		if (next_vert != -1) {
 			if (flags[next_vert] == Flags::unvisited) {
 				flags[next_vert] = Flags::be_visiting;
 				stack.push(vertexs[next_vert]);
 				cout << next_vert << " ";
-				++next_idx;
 			}
 		}
 		else {
 			stack.pop();
-			flags[next_vert] = Flags::visited;
-			next_idx = 0;
+			flags[] = Flags::visited;
+		}
+
+	}
+}
+
+template<typename Type>
+inline int Graph<Type>::next(Node& node)
+{
+	for (auto& i : node) {
+		if (i.flag == Flags::unvisited) {
+			i.flag = Flags::finish_visit;
+			return i.end_idx;
 		}
 	}
+	return -1;
 }
