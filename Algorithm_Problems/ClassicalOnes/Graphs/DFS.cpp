@@ -4,7 +4,7 @@ using namespace std;
 
 int main() {
 	Graph<int> graph(6);
-	graph.addEdge(0,1, 1);
+	graph.addEdge(0, 1, 1);
 	graph.addEdge(0, 2, 1);
 	graph.addEdge(2, 4, 1);
 	graph.addEdge(1, 2, 1);
@@ -14,5 +14,6 @@ int main() {
 	graph.addEdge(5, 0, 1);
 	//graph.showAdjMatrix();
 	graph.DFS();
+	graph.BFS();
 	return 0;
 }

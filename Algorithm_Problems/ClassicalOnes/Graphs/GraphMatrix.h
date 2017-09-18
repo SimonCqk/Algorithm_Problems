@@ -7,9 +7,11 @@
 #include<algorithm>
 #include<cassert>
 #include<stack>
+#include<queue>
 
 using std::vector;
 using std::stack;
+using std::queue;
 using std::cin;
 using std::cout;
 using std::endl;
@@ -30,7 +32,7 @@ class Edge final
 
 public:
 	explicit Edge(const size_t& start, const size_t& end = 0, const Type& value = Type())
-		:start_idx(start), end_idx(end), value(value),flag(Flags::unvisited) {}
+		:start_idx(start), end_idx(end), value(value), flag(Flags::unvisited) {}
 	size_t getEnd() const { return end_idx; }
 	size_t getValue() const { return value; }
 	~Edge() = default;
@@ -50,6 +52,7 @@ public:
 		num_edges(0) {}
 	explicit Graph(const size_t& size);
 	~Graph() = default;
+	void init();
 	void showAdjMatrix() const;
 	vector<vector<int>> getAdjMatrix() const;
 	size_t getNumOfNodes() const;
@@ -66,11 +69,11 @@ public:
 	void removeEdge(const size_t& vertex_idx, const size_t& end);
 
 	void DFS();
+	void BFS(const size_t& vertex_idx = 0);
 private:
 	vector<Node> vertexs;
-	vector<Flags> flags; // corresponding to the states of vertexs.
 	size_t num_edges;
-	void DFS_visit(const int& idx);
+	void DFS_visit(const int& idx, vector<Flags>& flags);
 	int next_edge(const int& idx);
 };
 
@@ -80,7 +83,15 @@ inline Graph<Type>::Graph(const size_t & size)
 {
 	assert(size > 0);
 	vertexs.resize(size);
-	flags.resize(size, Flags::unvisited);
+}
+
+template<typename Type>
+inline void Graph<Type>::init()
+{
+	for (auto& edges : vertexs)
+		for (auto& edge : edges) {
+			edge.flag = Flags::unvisited;
+		}
 }
 
 template<typename Type>
@@ -180,8 +191,6 @@ inline void Graph<Type>::addEdge(const size_t & vertex_idx, const size_t & end, 
 	assert(vertex_idx >= 0 && end >= 0 && vertex_idx != end);
 	if (vertex_idx > vertexs.size() || end > vertexs.size()) {
 		vertexs.resize(max(vertex_idx, end) + 1);
-		for (size_t i = 0; i < vertex_idx - vertexs.size(); ++i)
-			flags.push_back(Flags::unvisited);
 	}
 	if (vertexs[vertex_idx].size() != 0 && value != vertexs[vertex_idx][0].value) {
 		cout << "Invalid Input value." << endl;
@@ -203,17 +212,48 @@ inline void Graph<Type>::removeEdge(const size_t & vertex_idx, const size_t & en
 template<typename Type>
 inline void Graph<Type>::DFS()
 {
-	cout << "Path is [always start from root index-0] : 0 ";
+	init();
+	vector<Flags> flags(vertexs.size(), Flags::unvisited); // corresponding to the states of vertexs.
+	cout << "Path is [always start from root index 0] :\n 0 ";
 	int size = vertexs.size();
 	for (int i = 0; i < size; ++i) {
 		if (flags[i] == Flags::unvisited)
-			DFS_visit(i);
+			DFS_visit(i, flags);
 	}
 	cout << endl;
 }
 
 template<typename Type>
-inline void Graph<Type>::DFS_visit(const int& idx)
+inline void Graph<Type>::BFS(const size_t& vertex_idx = 0)
+{
+	init();
+	vector<int> distance(vertexs.size(), 0); // distance between root and node[index].
+	vector<Flags> flags(vertexs.size(), Flags::unvisited);
+	queue<int> queue;
+	queue.push(vertex_idx);
+	flags[vertex_idx] = Flags::be_visiting;
+	int index;
+	while (!queue.empty()) {
+		int now = queue.front(); queue.pop();
+		flags[now] = Flags::finish_visit;
+		for (auto &edge : vertexs[now]) {
+			index = edge.end_idx;
+			if (flags[index] == Flags::unvisited) {
+				flags[index] = Flags::be_visiting;
+				distance[index] = distance[now] + 1;
+				queue.push(index);
+			}
+		}
+	}
+	cout << "Distance between root and every node ." << endl;
+	for (const auto& i : distance) {
+		cout << i << " ";
+	}
+	cout << endl;
+}
+
+template<typename Type>
+inline void Graph<Type>::DFS_visit(const int& idx, vector<Flags>& flags)
 {
 	stack<int> stack;
 	stack.push(idx);  // push the index of node into stack, instead of the origin node.
