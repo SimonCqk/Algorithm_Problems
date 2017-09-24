@@ -17,7 +17,7 @@ void do_tasks(std::size_t count, std::function<void(std::size_t start, std::size
 	auto get_task = [=](std::size_t index) {
 		auto start = count * index / thread_count;
 		auto finish = count * (index + 1) / thread_count;
-		// std::cout << "from " << start << " to " << finish << "\n";
+		std::cout << "from " << start << " to " << finish << "\n";
 		return [task, start, finish] { task(start, finish); };
 	};
 	for (auto& thread : threads) {
