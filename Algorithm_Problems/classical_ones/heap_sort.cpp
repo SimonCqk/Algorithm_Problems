@@ -5,8 +5,8 @@ using namespace std;
 
 //确定亲/左/右结点的下标
 int parent(const int& i) { return i / 2; }
-int left(const int& i) { return 2 * i; }
-int right(const int& i) { return 2 * i + 1; }
+int left_child(const int& i) { return 2 * i; }
+int right_child(const int& i) { return 2 * i + 1; }
 
 // 从下标i = 1开始存储
 void BuildCBT(vector<int>& CBT, const int& N) {
@@ -17,8 +17,8 @@ void BuildCBT(vector<int>& CBT, const int& N) {
 	}
 }
 
-void MaxHeapify(vector<int>& CBT, int N, int i) {
-	int L = left(i); int R = right(i);
+void maxheapify(vector<int>& CBT, int N, int i) {
+	int L = left_child(i); int R = right_child(i);
 	int largest;
 	//从左/自身/右子结点中选出最大的结点
 	if (L <= N&&CBT[L] > CBT[i])
@@ -29,13 +29,13 @@ void MaxHeapify(vector<int>& CBT, int N, int i) {
 		largest = R;
 	if (largest != i) {//i的子结点值更大
 		std::swap(CBT[i], CBT[largest]);
-		MaxHeapify(CBT, N, largest);
+		maxheapify(CBT, N, largest);
 	}
 }
 
-void BuildMaxHeap(vector<int>& BCT, int N) {
+void build_maxheap(vector<int>& BCT, int N) {
 	for (int i = N / 2; i >= 1; --i) {
-		MaxHeapify(BCT, N, i);
+		maxheapify(BCT, N, i);
 	}
 }
 
@@ -50,7 +50,7 @@ int main() {
 	cin >> N;
 	vector<int> CBT;
 	BuildCBT(CBT, N);
-	BuildMaxHeap(CBT, N);
+	build_maxheap(CBT, N);
 	PrintHeap(CBT, N);
 	return 0;
 }
