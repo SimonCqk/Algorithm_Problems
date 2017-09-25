@@ -8,6 +8,7 @@
 #include<cassert>
 #include<stack>
 #include<queue>
+#include<numeric>
 
 using std::vector;
 using std::stack;
@@ -69,13 +70,13 @@ public:
 	void removeEdge(const size_t& vertex_idx, const size_t& end);
 
 	void DFS();
-	void BFS(const size_t& vertex_idx = 0);
-	void MST(); // minimum spanning tree.
+	void BFS(const size_t& vertex_idx);
+	int MST(); // minimum spanning tree.
 private:
 	vector<Node> vertexs;
 	size_t num_edges;
 	void DFS_visit(const int& idx, vector<Flags>& flags);
-	size_t findMinEdge(const Node& node);
+	size_t findMinEdge(Node& node);
 	int next_edge(const int& idx);
 };
 
@@ -194,10 +195,6 @@ inline void Graph<Type>::addEdge(const size_t & vertex_idx, const size_t & end, 
 	if (vertex_idx > vertexs.size() || end > vertexs.size()) {
 		vertexs.resize(max(vertex_idx, end) + 1);
 	}
-	if (vertexs[vertex_idx].size() != 0 && value != vertexs[vertex_idx][0].value) {
-		cout << "Invalid Input value." << endl;
-		exit(0);
-	}
 	vertexs[vertex_idx].push_back(Edge<Type>(vertex_idx, end, value));
 	++num_edges;
 }
@@ -226,7 +223,7 @@ inline void Graph<Type>::DFS()
 }
 
 template<typename Type>
-inline void Graph<Type>::BFS(const size_t& vertex_idx = 0)
+inline void Graph<Type>::BFS(const size_t& vertex_idx)
 {
 	init();
 	vector<int> distance(vertexs.size(), 0); // distance between root and node[index].
@@ -255,27 +252,32 @@ inline void Graph<Type>::BFS(const size_t& vertex_idx = 0)
 }
 
 template<typename Type>
-inline void Graph<Type>::MST()  // return the sum value of MST
+inline int Graph<Type>::MST()  // return the sum value of MST [prim's algorithm].
 {
 	init();
 	int size = vertexs.size();
 	vector<int> parent(size);
-	vector<Edge<int>>, mst_edges(size);
+	vector<Edge<Type>>  mst_edges;
 	vector<Flags> flags(size, Flags::unvisited); // corresponding to the states of vertexs.
 	parent[0] = -1;  // root has no parent.
-	mst_edges.push_back(vertexs[0]);
 	flags[0] = Flags::visited;
-	int next_vert=0 ,min_edge_idx;
+	int next_vert = 0, min_edge_idx;
 	while (true) {
 		min_edge_idx = findMinEdge(vertexs[next_vert]);
 		if (min_edge_idx == -1)
 			break;
-		mst_edges.push_back(vertexs[next_vert][min_edge_idx]);
+		mst_edges.push_back(vertexs[next_vert][min_edge_idx]); // add edge to final vector.
 		flags[next_vert] = Flags::visited;
 		for (int i = 0; i < size; ++i) {
-			if(flags[i]!=Flags::visited)
+			if (flags[i] == Flags::unvisited)
+				next_vert = i;
 		}
 	}
+	Type sum = Type();
+	for (auto& edge : mst_edges) {
+		sum += edge.value;
+	}
+	return sum;
 }
 
 template<typename Type>
@@ -303,17 +305,17 @@ inline void Graph<Type>::DFS_visit(const int& idx, vector<Flags>& flags)
 }
 
 template<typename Type>
-inline size_t Graph<Type>::findMinEdge(const Node & node)
+inline size_t Graph<Type>::findMinEdge(Node & node)
 {
-	size_t min_idx=-1,size=node.size();
+	size_t min_idx = -1, size = node.size();
 	int min = node[0].value;
-	for (int i = 0; i < size;++i) {
-		if (node[i].value < min&&node[i].flag!=Flags::visited) {
+	for (size_t i = 0; i < size; ++i) {
+		if (node[i].value < min&&node[i].flag != Flags::visited) {
 			min = node[i].value;
 			min_idx = i;
 		}
 	}
-	if(min_idx!=-1)
+	if (min_idx != -1)
 		node[min_idx].flag = Flags::visited;
 	return min_idx;
 }
