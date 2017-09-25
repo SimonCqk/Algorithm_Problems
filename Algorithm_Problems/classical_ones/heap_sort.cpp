@@ -1,14 +1,13 @@
 //MAX_HEAP    MIN_HEAP
 #include<iostream>
 #include<algorithm>
-//#include<string>
 #include<vector>
 using namespace std;
 
 //确定亲/左/右结点的下标
-int parent(int i) { return i / 2; }
-int left(int i) { return 2 * i; }
-int right(int i) { return 2 * i + 1; }
+int parent(const int& i) { return i / 2; }
+int left(const int& i) { return 2 * i; }
+int right(const int& i) { return 2 * i + 1; }
 
 // *REMARK:从下标i=1开始存储
 void BuildCBT(vector<int>& CBT, int N) {

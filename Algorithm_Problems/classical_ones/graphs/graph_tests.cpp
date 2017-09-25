@@ -1,4 +1,4 @@
-#include"GraphMatrix.h"
+#include"graph.h"
 
 using namespace std;
 

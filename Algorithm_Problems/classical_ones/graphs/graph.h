@@ -70,10 +70,12 @@ public:
 
 	void DFS();
 	void BFS(const size_t& vertex_idx = 0);
+	void MST(); // minimum spanning tree.
 private:
 	vector<Node> vertexs;
 	size_t num_edges;
 	void DFS_visit(const int& idx, vector<Flags>& flags);
+	size_t findMinEdge(const Node& node);
 	int next_edge(const int& idx);
 };
 
@@ -253,6 +255,30 @@ inline void Graph<Type>::BFS(const size_t& vertex_idx = 0)
 }
 
 template<typename Type>
+inline void Graph<Type>::MST()  // return the sum value of MST
+{
+	init();
+	int size = vertexs.size();
+	vector<int> parent(size);
+	vector<Edge<int>>, mst_edges(size);
+	vector<Flags> flags(size, Flags::unvisited); // corresponding to the states of vertexs.
+	parent[0] = -1;  // root has no parent.
+	mst_edges.push_back(vertexs[0]);
+	flags[0] = Flags::visited;
+	int next_vert=0 ,min_edge_idx;
+	while (true) {
+		min_edge_idx = findMinEdge(vertexs[next_vert]);
+		if (min_edge_idx == -1)
+			break;
+		mst_edges.push_back(vertexs[next_vert][min_edge_idx]);
+		flags[next_vert] = Flags::visited;
+		for (int i = 0; i < size; ++i) {
+			if(flags[i]!=Flags::visited)
+		}
+	}
+}
+
+template<typename Type>
 inline void Graph<Type>::DFS_visit(const int& idx, vector<Flags>& flags)
 {
 	stack<int> stack;
@@ -274,6 +300,22 @@ inline void Graph<Type>::DFS_visit(const int& idx, vector<Flags>& flags)
 		}
 
 	}
+}
+
+template<typename Type>
+inline size_t Graph<Type>::findMinEdge(const Node & node)
+{
+	size_t min_idx=-1,size=node.size();
+	int min = node[0].value;
+	for (int i = 0; i < size;++i) {
+		if (node[i].value < min&&node[i].flag!=Flags::visited) {
+			min = node[i].value;
+			min_idx = i;
+		}
+	}
+	if(min_idx!=-1)
+		node[min_idx].flag = Flags::visited;
+	return min_idx;
 }
 
 template<typename Type>
