@@ -1,4 +1,3 @@
-//MAX_HEAP    MIN_HEAP
 #include<iostream>
 #include<algorithm>
 #include<vector>
@@ -9,20 +8,25 @@ int parent(const int& i) { return i / 2; }
 int left(const int& i) { return 2 * i; }
 int right(const int& i) { return 2 * i + 1; }
 
-// *REMARK:从下标i=1开始存储
-void BuildCBT(vector<int>& CBT, int N) {
+// 从下标i = 1开始存储
+void BuildCBT(vector<int>& CBT, const int& N) {
 	CBT.resize(2 * N + 2);
 	cout << "Input the nodes : " << endl;
-	for (int i = 1; i <= N; ++i) { cin >> CBT[i]; }
+	for (int i = 1; i <= N; ++i) {
+		cin >> CBT[i];
+	}
 }
 
 void MaxHeapify(vector<int>& CBT, int N, int i) {
 	int L = left(i); int R = right(i);
 	int largest;
 	//从左/自身/右子结点中选出最大的结点
-	if (L <= N&&CBT[L] > CBT[i])largest = L;
-	else largest = i;
-	if (R <= N&&CBT[R] > CBT[largest])largest = R;
+	if (L <= N&&CBT[L] > CBT[i])
+		largest = L;
+	else
+		largest = i;
+	if (R <= N&&CBT[R] > CBT[largest])
+		largest = R;
 	if (largest != i) {//i的子结点值更大
 		std::swap(CBT[i], CBT[largest]);
 		MaxHeapify(CBT, N, largest);
@@ -36,7 +40,8 @@ void BuildMaxHeap(vector<int>& BCT, int N) {
 }
 
 void PrintHeap(const vector<int> CBT, int N) {
-	for (int i = 1; i <= N; ++i)cout << CBT[i] << " ";
+	for (int i = 1; i <= N; ++i)
+		cout << CBT[i] << " ";
 	cout << endl;
 }
 int main() {
