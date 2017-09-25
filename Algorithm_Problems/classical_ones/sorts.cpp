@@ -1,4 +1,4 @@
-//	¿ìËÙÅÅĞò/·ÖÖÎ·¨
+//	å¿«é€Ÿæ’åº/åˆ†æ²»æ³•
 
 /*
 int Partiton(int A[], int p, int r) {
@@ -23,7 +23,7 @@ void Quick_Sort(int A[], int p, int r) {
 */
 
 /*
-¹é²¢ÅÅĞò
+å½’å¹¶æ’åº
 #define MAX 100000
 #define SENTINEL 200000000
 
