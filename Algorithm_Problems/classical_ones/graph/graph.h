@@ -48,6 +48,7 @@ template<typename Type>
 class Graph
 {
 	using Node = vector<Edge<Type>>;
+	int INFTY = (1 << 20);
 public:
 	Graph() :
 		num_edges(0) {}
@@ -256,26 +257,36 @@ inline int Graph<Type>::MST()  // return the sum value of MST [prim's algorithm]
 {
 	init();
 	int size = vertexs.size();
-	vector<int> parent(size);
-	vector<Edge<Type>>  mst_edges;
+	vector<Type> min_values(size, INFTY);  // [i] record min values of all edges connected to i_th vertex and (all-i) vertexs.
+	vector<Type>  mst_edges(size);
 	vector<Flags> flags(size, Flags::unvisited); // corresponding to the states of vertexs.
-	parent[0] = -1;  // root has no parent.
-	flags[0] = Flags::visited;
-	int next_vert = 0, min_edge_idx;
+	int minv, idx;
 	while (true) {
-		min_edge_idx = findMinEdge(vertexs[next_vert]);
-		if (min_edge_idx == -1)
-			break;
-		mst_edges.push_back(vertexs[next_vert][min_edge_idx]); // add edge to final vector.
-		flags[next_vert] = Flags::visited;
+		minv = INFTY;
+		idx = -1;
 		for (int i = 0; i < size; ++i) {
-			if (flags[i] == Flags::unvisited)
-				next_vert = i;
+			if (minv > min_values[i] && flags[i] != Flags::visited) { // find min value of all not-added vertexs.
+				idx = i;
+				minv = min_values[i];
+			}
+		}
+		if (idx == -1)  // all vertexs have been travelled.
+			break;
+		flags[idx] = Flags::visited;
+		for (int i = 0; i < size; ++i) {  // update min_values.
+			if (flags[i] != Flags::visited) {  // find all not-added vertexs.
+				if (min_values[i] > vertexs[idx][i].value) {
+					min_values[i] = vertexs[idx][i].value;
+					mst_edges[i] = vertexs[idx][i].value;
+					flags[i] = Flags::be_visiting;
+				}
+			}
 		}
 	}
+
 	Type sum = Type();
 	for (auto& edge : mst_edges) {
-		sum += edge.value;
+		sum += edge;
 	}
 	return sum;
 }
