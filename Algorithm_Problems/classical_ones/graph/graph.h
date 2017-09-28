@@ -72,12 +72,13 @@ public:
 
 	void DFS();
 	void BFS(const size_t& vertex_idx);
-	int MST(); // minimum spanning tree.
+	int MiniSpanTree_Prim(); // minimum spanning tree.
 private:
 	vector<Node> vertexs;
 	size_t num_edges;
 	void DFS_visit(const int& idx, vector<Flags>& flags);
 	size_t findMinEdge(Node& node);
+	bool isConnected(const Node& node, const int& target);
 	int next_edge(const int& idx);
 };
 
@@ -252,41 +253,59 @@ inline void Graph<Type>::BFS(const size_t& vertex_idx)
 	cout << endl;
 }
 
+/*
+变量含义解释：
+S：生成树顶点集合，初始只含起点 v0。
+mst[i]：存放 S 中距离顶点 i 最近的顶点编号。
+lowcost[i]：存放 S 中到顶点 i 的最短距离。
+
+算法过程：
+
+初始化顶点集合 S，一开始只将起点 v0 加入到 S 中。
+初始化 mst 数组，初值均为 v0。
+初始化 lowcost 数组，初值为 v0 到各顶点的距离，无边则为 INF。
+重复以下步骤，直到所有顶点都在 S 中为止：
+将 lowcost 值最小的顶点 v 加入到 S 中。
+更新与顶点 v 相邻顶点的 mst 值。
+更新与顶点 v 相邻顶点的 lowcost 值。
+*/
+
 template<typename Type>
-inline int Graph<Type>::MST()  // return the sum value of MST [prim's algorithm].
+inline int Graph<Type>::MiniSpanTree_Prim()  // return the sum value of MiniSpanTree_Prim [prim's algorithm].
 {
 	init();
+	int sum = 0;
 	int size = vertexs.size();
-	vector<Type> min_values(size, INFTY);  // [i] record min values of all edges connected to i_th vertex and (all-i) vertexs.
-	vector<Type>  mst_edges(size);
-	vector<Flags> flags(size, Flags::unvisited); // corresponding to the states of vertexs.
-	int minv, idx;
+	vector<Flags> flags(size, Flags::unvisited);
+	vector<int> mst(size,0), lowcost(size,INFTY);
+	//initialize
+	flags[0] = Flags::visited;  // start from root.
+	for (const auto& edge : vertexs[0]) {
+		lowcost[edge.end_idx] = edge.value;
+	}
+	int idx,minv;
 	while (true) {
 		minv = INFTY;
 		idx = -1;
 		for (int i = 0; i < size; ++i) {
-			if (minv > min_values[i] && flags[i] != Flags::visited) { // find min value of all not-added vertexs.
+			if (minv > lowcost[i]&&flags[i]!=Flags::visited) {
+				minv = lowcost[i];
 				idx = i;
-				minv = min_values[i];
 			}
 		}
-		if (idx == -1)  // all vertexs have been travelled.
-			break;
+		if (idx == -1)  // all vertexs have benn added.
+			break; 
+		sum += minv;
 		flags[idx] = Flags::visited;
-		for (int i = 0; i < size; ++i) {  // update min_values.
-			if (flags[i] != Flags::visited) {  // find all not-added vertexs.
-				if (min_values[i] > vertexs[idx][i].value) {
-					min_values[i] = vertexs[idx][i].value;
-					mst_edges[i] = vertexs[idx][i].value;
-					flags[i] = Flags::be_visiting;
+		//update mst[] and lowcost[].
+		for(int i=0;i<size;++i){
+			if (flags[i] != Flags::visited&&isConnected(vertexs[idx], i)) {
+				if (lowcost[i] > findEdge(idx, i)->value) {
+					lowcost[i] = findEdge(idx, i)->value;
+					mst[i] = idx;
 				}
 			}
 		}
-	}
-
-	Type sum = Type();
-	for (auto& edge : mst_edges) {
-		sum += edge;
 	}
 	return sum;
 }
@@ -329,6 +348,16 @@ inline size_t Graph<Type>::findMinEdge(Node & node)
 	if (min_idx != -1)
 		node[min_idx].flag = Flags::visited;
 	return min_idx;
+}
+
+template<typename Type>
+inline bool Graph<Type>::isConnected(const Node & node, const int & target)
+{
+	for (const auto& edge : node) {
+		if (edge.end_idx == target)
+			return true;
+	}
+	return false;
 }
 
 template<typename Type>

@@ -19,6 +19,6 @@ int main() {
 	graph.addEdge(4, 2, 1);
 	graph.addEdge(4, 3, 3);
 	graph.showAdjMatrix();
-	cout <<"sum of minimum spanning tree is : " <<graph.MST() << std::endl;
+	cout <<"sum of minimum spanning tree is : " <<graph.MiniSpanTree_Prim() << std::endl;
 	return 0;
 }
