@@ -54,7 +54,6 @@ public:
 		num_edges(0) {}
 	explicit Graph(const size_t& size);
 	~Graph() = default;
-	void init();
 	void showAdjMatrix() const;
 	vector<vector<int>> getAdjMatrix() const;
 	size_t getNumOfNodes() const;
@@ -74,12 +73,13 @@ public:
 	void BFS(const size_t& vertex_idx);
 	int MiniSpanTree_Prim(); // minimum spanning tree.
 private:
-	vector<Node> vertexs;
-	size_t num_edges;
+	void init();
 	void DFS_visit(const int& idx, vector<Flags>& flags);
 	size_t findMinEdge(Node& node);
 	bool isConnected(const Node& node, const int& target);
 	int next_edge(const int& idx);
+	vector<Node> vertexs;
+	size_t num_edges;
 };
 
 template<typename Type>
@@ -254,20 +254,21 @@ inline void Graph<Type>::BFS(const size_t& vertex_idx)
 }
 
 /*
-变量含义解释：
-S：生成树顶点集合，初始只含起点 v0。
-mst[i]：存放 S 中距离顶点 i 最近的顶点编号。
-lowcost[i]：存放 S 中到顶点 i 的最短距离。
+variable explaination：
+flags：flag of whether this vertex is added to mst set.[visited=added]
+mst[i]：record the closest index [vertexs in mst] to vertex[i].
+lowcost[i]：record the shortest distance [vertexs in mst] to vertex[i].
 
-算法过程：
+algorithm：
 
-初始化顶点集合 S，一开始只将起点 v0 加入到 S 中。
-初始化 mst 数组，初值均为 v0。
-初始化 lowcost 数组，初值为 v0 到各顶点的距离，无边则为 INF。
-重复以下步骤，直到所有顶点都在 S 中为止：
-将 lowcost 值最小的顶点 v 加入到 S 中。
-更新与顶点 v 相邻顶点的 mst 值。
-更新与顶点 v 相邻顶点的 lowcost 值。
+initialize flags.start from v0.
+initialize mst[]，initial values are all 0.
+initialize lowcost[]，initial values are distance of v0 to all other vertexts，INFTY if not connected.
+
+repeat until all vertexs are added to mst：
+  add the vertex corresponding to the smallest value in lowcost[] to mst.
+  update the mst[] of current vertex.
+  update the lowcost[] of current vertex.
 */
 
 template<typename Type>
@@ -277,28 +278,28 @@ inline int Graph<Type>::MiniSpanTree_Prim()  // return the sum value of MiniSpan
 	int sum = 0;
 	int size = vertexs.size();
 	vector<Flags> flags(size, Flags::unvisited);
-	vector<int> mst(size,0), lowcost(size,INFTY);
+	vector<int> mst(size, 0), lowcost(size, INFTY);
 	//initialize
 	flags[0] = Flags::visited;  // start from root.
 	for (const auto& edge : vertexs[0]) {
 		lowcost[edge.end_idx] = edge.value;
 	}
-	int idx,minv;
+	int idx, minv;
 	while (true) {
 		minv = INFTY;
 		idx = -1;
-		for (int i = 0; i < size; ++i) {
-			if (minv > lowcost[i]&&flags[i]!=Flags::visited) {
+		for (int i = 1; i < size; ++i) {
+			if (minv > lowcost[i] && flags[i] != Flags::visited) {
 				minv = lowcost[i];
 				idx = i;
 			}
 		}
 		if (idx == -1)  // all vertexs have benn added.
-			break; 
+			break;
 		sum += minv;
 		flags[idx] = Flags::visited;
 		//update mst[] and lowcost[].
-		for(int i=0;i<size;++i){
+		for (int i = 1; i < size; ++i) {
 			if (flags[i] != Flags::visited&&isConnected(vertexs[idx], i)) {
 				if (lowcost[i] > findEdge(idx, i)->value) {
 					lowcost[i] = findEdge(idx, i)->value;
