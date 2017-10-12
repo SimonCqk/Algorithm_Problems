@@ -72,6 +72,7 @@ public:
 	void DFS();
 	void BFS(const size_t& vertex_idx);
 	int MiniSpanTree_Prim(); // minimum spanning tree.
+	void SingleSourcePath(); 
 private:
 	void init();
 	void DFS_visit(const int& idx, vector<Flags>& flags);
@@ -257,18 +258,18 @@ inline void Graph<Type>::BFS(const size_t& vertex_idx)
 variable explaination£º
 flags£ºflag of whether this vertex is added to mst set.[visited=added]
 mst[i]£ºrecord the closest index [vertexs in mst] to vertex[i].
-lowcost[i]£ºrecord the shortest distance [vertexs in mst] to vertex[i].
+ssp[i]£ºrecord the shortest distance [vertexs in mst] to vertex[i].
 
 algorithm£º
 
 initialize flags.start from v0.
 initialize mst[]£¬initial values are all 0.
-initialize lowcost[]£¬initial values are distance of v0 to all other vertexts£¬INFTY if not connected.
+initialize ssp[]£¬initial values are distance of v0 to all other vertexts£¬INFTY if not connected.
 
 repeat until all vertexs are added to mst£º
-  add the vertex corresponding to the smallest value in lowcost[] to mst.
+  add the vertex corresponding to the smallest value in ssp[] to mst.
   update the mst[] of current vertex.
-  update the lowcost[] of current vertex.
+  update the ssp[] of current vertex.
 */
 
 template<typename Type>
@@ -298,7 +299,7 @@ inline int Graph<Type>::MiniSpanTree_Prim()  // return the sum value of MiniSpan
 			break;
 		sum += minv;
 		flags[idx] = Flags::visited;
-		//update mst[] and lowcost[].
+		//update mst[] and ssp[].
 		for (int i = 1; i < size; ++i) {
 			if (flags[i] != Flags::visited&&isConnected(vertexs[idx], i)) {
 				if (lowcost[i] > findEdge(idx, i)->value) {
@@ -309,6 +310,45 @@ inline int Graph<Type>::MiniSpanTree_Prim()  // return the sum value of MiniSpan
 		}
 	}
 	return sum;
+}
+
+template<typename Type>
+inline void Graph<Type>::SingleSourcePath()  // dijkstra's algorithm.
+{
+	init();
+	int size = vertexs.size();
+	vector<Flags> flags(size, Flags::unvisited);
+	vector<int> ssp(size, INFTY);
+	//initialize
+	flags[0] = Flags::be_visiting;  // start from root.
+	ssp[0] = 0;
+	int idx, minv;
+	while (true) {
+		minv = INFTY;
+		idx = -1;
+		for (int i = 0; i < size; ++i) {
+			if (minv > ssp[i] && flags[i] != Flags::visited) {
+				minv = ssp[i];
+				idx = i;
+			}
+		}
+		if (idx == -1)  // all vertexs have benn added.
+			break;
+		flags[idx] = Flags::visited;
+		//update ssp[].
+		for (int i = 0; i < size; ++i) {
+			if (flags[i] != Flags::visited&&isConnected(vertexs[idx], i)) {
+				int newv = findEdge(idx, i)->value;
+				if (ssp[i] > ssp[idx]+newv) {
+					ssp[i] = ssp[idx] + newv;
+					flags[i] = Flags::be_visiting;
+				}
+			}
+		}
+	}
+	for (int i = 0; i < size; ++i) {
+		cout << i << " " << ssp[i] << endl;
+	}
 }
 
 template<typename Type>

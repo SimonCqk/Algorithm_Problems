@@ -23,6 +23,7 @@ int main() {
 	cout << endl;
 	graph.BFS(0);
 	cout << endl;
-	cout << "sum of minimum spanning tree is : " << graph.MiniSpanTree_Prim() << std::endl;
+	//cout << "sum of minimum spanning tree is : " << graph.MiniSpanTree_Prim() << std::endl;
+	graph.SingleSourcePath();
 	return 0;
 }
