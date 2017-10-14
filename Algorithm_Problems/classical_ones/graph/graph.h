@@ -73,6 +73,7 @@ public:
 	void BFS(const size_t& vertex_idx);
 	int MiniSpanTree_Prim(); // minimum spanning tree.
 	void SingleSourcePath(); 
+	void optmzed_SingleSourcePath();
 private:
 	void init();
 	void DFS_visit(const int& idx, vector<Flags>& flags);
@@ -343,6 +344,48 @@ inline void Graph<Type>::SingleSourcePath()  // dijkstra's algorithm.
 					ssp[i] = ssp[idx] + newv;
 					flags[i] = Flags::be_visiting;
 				}
+			}
+		}
+	}
+	for (int i = 0; i < size; ++i) {
+		cout << i << " " << ssp[i] << endl;
+	}
+}
+
+template<typename Type>
+inline void Graph<Type>::optmzed_SingleSourcePath()
+{
+	// optimized single source path algorithm .
+	// maintain by priority queue [ binary heap ]
+	init();
+	int size = vertexs.size();
+	vector<Flags> flags(size, Flags::unvisited);
+	vector<int> ssp(size, INFTY);
+	// pair: first -> second corresponding to graph: start -> end
+	std::priority_queue<std::pair<int, int>> pq; 
+	//initialize
+	flags[0] = Flags::be_visiting;  // start from root.
+	ssp[0] = 0;
+	pq.push(make_pair(0, 0));
+	int idx;
+	while (!pq.empty()) {
+		pair<int, int> get = pq.top();
+		pq.pop();
+		idx = get.second;
+		flags[idx] = Flags::visited;
+		// get ssp[idx], if it's not the min, then skip
+		if (ssp[idx] < get.first*(-1))
+			continue;
+		// update ssp[].
+		int size_ = vertexs[idx].size();
+		for (int i = 0; i < size_; ++i) {
+			int v = vertexs[idx][i].end_idx;
+			if (flags[v] == Flags::visited)
+				continue;
+			if (ssp[v] > ssp[idx] + vertexs[idx][i].value) {
+				ssp[v] = ssp[idx] + vertexs[idx][i].value;
+				pq.push(make_pair(ssp[v] * (-1), v));
+				flags[v] = Flags::be_visiting;
 			}
 		}
 	}
