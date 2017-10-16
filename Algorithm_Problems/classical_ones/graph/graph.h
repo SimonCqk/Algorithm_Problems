@@ -26,7 +26,7 @@ enum class Flags
 };
 
 template<typename Type>
-class Edge final
+class Edge
 {
 	template<typename Type>
 	friend class Graph;
@@ -41,7 +41,7 @@ private:
 	size_t start_idx;
 	size_t end_idx;
 	Type value;
-	Flags flag; // search for next_edge unvisied edge.
+	Flags flag; 
 };
 
 template<typename Type>
@@ -178,7 +178,6 @@ inline Type Graph<Type>::getVertexValue(const size_t & vertex_idx) const
 	return vertexs[vertex_idx][0].value;
 }
 
-#endif // !GRAPH_MATRIX_H
 
 template<typename Type>
 inline decltype(auto) Graph<Type>::findEdge(const size_t & vertex_idx, const size_t & end) const
@@ -455,3 +454,5 @@ inline int Graph<Type>::next_edge(const int& idx)
 	}
 	return -1;
 }
+
+#endif
