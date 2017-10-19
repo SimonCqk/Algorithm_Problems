@@ -36,12 +36,12 @@ public:
 		int carry = 0; // carry == 1 may happen.
 		ListNode* ans = new ListNode(-1); // head node.
 		ListNode* ans_ = ans; // record head node.
-		while (l1 != NULL || l2 != NULL){
-			if (l1 != NULL){
+		while (l1 != NULL || l2 != NULL) {
+			if (l1 != NULL) {
 				carry += l1->val;
 				l1 = l1->next;
 			}
-			if (l2 != NULL){
+			if (l2 != NULL) {
 				carry += l2->val;
 				l2 = l2->next;
 			}
