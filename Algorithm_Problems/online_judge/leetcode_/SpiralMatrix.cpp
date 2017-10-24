@@ -15,17 +15,17 @@ You should return [1,2,3,6,9,8,7,4,5].
 
 class Solution {
 public:
-	vector<int> spiralOrder(vector<vector<int>> &matrix) {
+	vector<int> spiralOrder(vector<vector<int>>& matrix) {
 		if (matrix.size() == 0)
 			return {};
 		int row = matrix.size(), col = matrix[0].size();
 		int up = 0, down = row - 1, left = 0, right = col - 1, count = 0;
 		vector<int> ans;
-		// int row = matrix.size(), col = matrix[0].size();
-		int total = row * col;
-		while (true) {
-			for (int i = left; i <= right; ++i) {
-				ans.push_back(matrix[up][i]);
+		//int row = matrix.size(), col = matrix[0].size();
+		int total = row*col;
+		while (true) {                                // judge count with n*n inside while body
+			for (int i = left; i <= right; ++i) {     // do not `while(count<=n*n)`
+				ans.push_back(matrix[up][i]);         // or it will run out of time
 				++count;
 			}
 			if (count >= total)
