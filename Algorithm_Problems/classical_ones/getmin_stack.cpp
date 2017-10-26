@@ -2,13 +2,13 @@
 Design a stack that supports getMin() in O(1) time and O(1) extra space
 */
 #include <set>
-#include<iostream>
+#include <iostream>
 
 using namespace std;
  
 // A user defined stack that supports getMin() in
 // addition to push() and pop()
-struct SpecialStack
+class SpecialStack
 {
     stack<int> s;
     int minEle;
