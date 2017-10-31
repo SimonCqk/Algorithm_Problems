@@ -14,10 +14,6 @@ Input: "cbbd"
 
 Output: "bb"
 */
-#include<string>
-#include<algorithm>
-#include<iostream>
-using std::string;
 
 class Solution {
 public:
@@ -59,10 +55,3 @@ public:
 		return true;
 	}
 };
-
-int main() {
-	Solution s;
-	string str = "babadada";
-	std::cout << s.longestPalindrome(str) << std::endl;
-	return 0;
-}
