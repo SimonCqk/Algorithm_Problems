@@ -1,17 +1,11 @@
 #include<iostream>
 #include<algorithm>
 #include<vector>
+#include<limits>
 
 using namespace std;
 
-void GetNum() {
-	static int i = 0;
-	++i;
-	cout<<i<<endl;
-}
-
-
 int main() {
-	(GetNum(), GetNum());
+	cout << std::numeric_limits<long long>::max()<<endl;
 	return 0;
 }

@@ -4,27 +4,27 @@
 请完成一个函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。
 */
 
+// 从右上角或者左下角开始查找，逐步缩小查找范围
+// 不能从左上或者右下开始，范围会重叠
+
 class Solution {
 public:
-    bool Find(int target, vector<vector<int> > array) {
- 		int rowLen = array.size();
-        int colLen = array[0].size();
-        int i,j;
-        for(i=rowLen-1,j=0;i>=0&&j<colLen;)
-        {
-            if(target == array[i][j])
-                return true;
-            if(target < array[i][j])
-            {
-                i--;
-                continue;
-            }
-            if(target > array[i][j])
-            {
-                j++;
-                continue;
-            }
-        }
-        return false;
-    }
+	bool Find(int target, vector<vector<int>> matrix) {
+		int row = matrix.size();
+		int col = matrix[0].size();
+		// 判断是否为矩阵
+		for (const auto& each : matrix) {
+			if (each.size() != col)
+				return false;
+		}
+		for (int i = 0, j = col - 1; i >= 0 && i < row;){
+			if (target == matrix[i][j])
+				return true;
+			else if (target < matrix[i][j])
+				i--;
+			else			
+				j++;
+		}
+		return false;
+	}
 };
