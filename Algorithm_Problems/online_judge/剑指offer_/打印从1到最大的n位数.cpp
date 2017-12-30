@@ -59,6 +59,6 @@ void PrintOneToNDigits(int n) {
 
 
 int main() {
-	PrintOneToNDigits(3);
+	PrintOneToNDigits(5);
 	return 0;
 }
