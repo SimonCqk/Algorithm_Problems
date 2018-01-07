@@ -1,6 +1,6 @@
 #pragma once
-#ifndef OFFER_LIST_NODE_H
-#define OFFER_LIST_NODE_H
+#ifndef PRE_DEFINES_H
+#define PRE_DEFINES_H
 #include<vector>
 using std::vector;
 
@@ -46,4 +46,15 @@ void DestoryLinkedList(ListNode* head) {
 	}
 }
 
-#endif // !OFFER_LIST_NODE_H
+struct BinaryNode
+{
+	double value;
+	BinaryNode* left;
+	BinaryNode* right;
+	BinaryNode(const double& val)
+		:value(val),left(nullptr),right(nullptr){}
+	BinaryNode()
+		:left(nullptr),right(nullptr){}
+};
+
+#endif // !PRE_DEFINES_H
