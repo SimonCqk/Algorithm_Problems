@@ -63,14 +63,13 @@ struct BinaryNode
   注意传入的是指针的指针，否则不会生效(临时变量自动销毁).
 */
 template<typename T>
-void BuildBTree(BinaryNode<T>** node, const vector<T>& preorder) {
-	static size_t index = 0;
+void BuildBTree(BinaryNode<T>** node, const vector<T>& preorder,size_t index) {
 	if (preorder.empty() || index >= preorder.size())
 		return;
 	else {
 		*node = new BinaryNode<T>(preorder[index++]);
-		BuildBTree(&(*node)->left, preorder);
-		BuildBTree(&(*node)->right, preorder);
+		BuildBTree(&(*node)->left, preorder,index);
+		BuildBTree(&(*node)->right, preorder,index);
 	}
 }
 
