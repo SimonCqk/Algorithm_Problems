@@ -1,7 +1,7 @@
-#pragma once
 #ifndef PRE_DEFINES_H
 #define PRE_DEFINES_H
 #include<vector>
+#include<iostream>
 using std::vector;
 
 struct ListNode
@@ -17,7 +17,7 @@ struct ListNode
 };
 
 void BuildLinkedList(ListNode** head, const vector<int>& arr) {
-	if (head == nullptr || *head == nullptr||arr.empty())
+	if (head == nullptr || *head == nullptr || arr.empty())
 		return;
 	for (const int& i : arr) {
 		(*head)->next = new ListNode(i);
@@ -35,7 +35,7 @@ void PrintLinkedList(ListNode* head) {
 }
 
 void DestoryLinkedList(ListNode* head) {
-	if (!head||!head->next)
+	if (!head || !head->next)
 		return;
 	ListNode* cur = head;
 	ListNode* next = head->next;
@@ -46,15 +46,51 @@ void DestoryLinkedList(ListNode* head) {
 	}
 }
 
+template<typename T>
 struct BinaryNode
 {
-	double value;
+	T value;
 	BinaryNode* left;
 	BinaryNode* right;
-	BinaryNode(const double& val)
-		:value(val),left(nullptr),right(nullptr){}
+	BinaryNode(const T& val)
+		:value(val), left(nullptr), right(nullptr) {}
 	BinaryNode()
-		:left(nullptr),right(nullptr){}
+		:left(nullptr), right(nullptr) {}
 };
+
+
+/*
+  注意传入的是指针的指针，否则不会生效(临时变量自动销毁).
+*/
+template<typename T>
+void BuildBTree(BinaryNode<T>** node, const vector<T>& preorder) {
+	static size_t index = 0;
+	if (preorder.empty() || index >= preorder.size())
+		return;
+	else {
+		*node = new BinaryNode<T>(preorder[index++]);
+		BuildBTree(&(*node)->left, preorder);
+		BuildBTree(&(*node)->right, preorder);
+	}
+}
+
+template<typename T>
+void PrintBTree_Pre(BinaryNode<T>* node) {
+	if (node) {
+		std::cout << node->value << std::endl;
+		PrintBTree_Pre(node->left);
+		PrintBTree_Pre(node->right);
+	}
+}
+
+template<typename T>
+void DestoryBTree(BinaryNode<T>** node) {
+	if (*node) {
+		DestoryBTree(&(*node)->left);
+		DestoryBTree(&(*node)->right);
+		delete (*node); (*node) = nullptr;
+	}
+}
+
 
 #endif // !PRE_DEFINES_H
