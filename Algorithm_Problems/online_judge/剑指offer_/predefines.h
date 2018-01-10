@@ -61,24 +61,17 @@ struct BinaryNode
 
 /*
   注意传入的是指针的指针，否则不会生效(临时变量自动销毁).
+  二叉树是层序输入.
 */
 template<typename T>
-void BuildBTree(BinaryNode<T>** node, const vector<T>& preorder) {
-	static size_t index = 0;
-	static size_t count = 0;
-	++count;
-	if (preorder.empty() || index >= preorder.size()) {
-		--count;
-		if (count <= 1)
-			index = 0;
+void BuildBTree(BinaryNode<T>** node, const vector<T>& levelorder, size_t index = 0) {
+	if (levelorder.empty() || index >= levelorder.size())
 		return;
-	}
 	else {
-		*node = new BinaryNode<T>(preorder[index++]);
-		BuildBTree(&(*node)->left, preorder);
-		BuildBTree(&(*node)->right, preorder);
+		*node = new BinaryNode<T>(levelorder[index]);
+		BuildBTree(&(*node)->left, levelorder, 2 * index + 1);
+		BuildBTree(&(*node)->right, levelorder, 2 * index + 2);
 	}
-	--count;
 }
 
 template<typename T>

@@ -36,7 +36,7 @@ void ReverseBinaryTree_NoRecursive(BinaryNode<int>* root) {
 }
 
 int main() {
-	vector<int> tree{ 8,6,5,7,10,9,11 };
+	vector<int> tree{ 8,6,10,5,7,9,11 };
 	BinaryNode<int>* root = new BinaryNode<int>;
 	BuildBTree<int>(&root, tree);
 	PrintBTree_Pre(root);

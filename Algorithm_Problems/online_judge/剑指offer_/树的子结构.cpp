@@ -41,7 +41,7 @@ bool HasSubTree(BinaryNode<double>* first, BinaryNode<double>* second) {
 
 int main() {
 	BinaryNode<double>* big = new BinaryNode<double>;
-	vector<double> arr{ 8,8,9,2,4,7,7 };
+	vector<double> arr{ 8,8,7,9,2,4,7 };
 	BuildBTree(&big, arr);
 	BinaryNode<double>* small = new BinaryNode<double>;
 	vector<double> arr2{ 8,9,2 };
