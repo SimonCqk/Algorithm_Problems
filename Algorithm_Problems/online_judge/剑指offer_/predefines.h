@@ -2,6 +2,7 @@
 #define PRE_DEFINES_H
 #include<vector>
 #include<iostream>
+#include<queue>
 using std::vector;
 
 struct ListNode
@@ -82,6 +83,23 @@ void PrintBTree_Pre(BinaryNode<T>* node) {
 		PrintBTree_Pre(node->right);
 	}
 }
+
+template<typename T>
+void PrintByLevelOrder(BinaryNode<T>* root) {
+	queue<BinaryNode<T>*> q;
+	q.push(root);
+	while (!q.empty()) {
+		auto cur = q.front();
+		q.pop();
+		std::cout << cur->value << ' ';
+		if (cur->left)
+			q.push(cur->left);
+		if (cur->right)
+			q.push(cur->right);
+	}
+	std::cout << std::endl;
+}
+
 
 template<typename T>
 void DestoryBTree(BinaryNode<T>** node) {
