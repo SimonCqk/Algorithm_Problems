@@ -3,6 +3,9 @@
 #include<vector>
 #include<iostream>
 #include<queue>
+#include<stack>
+using std::queue;
+using std::stack;
 using std::vector;
 using std::cout;
 using std::endl;
