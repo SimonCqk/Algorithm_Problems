@@ -13,7 +13,7 @@ void ConverNode(BinaryNode<int>* node, BinaryNode<int>** last) {
 	auto cur = node;
 	if (cur->left)
 		ConverNode(cur->left, last);
-	cur->left = *(last);
+	cur->left = (*last);
 	if (*last)
 		(*last)->right = cur;
 	(*last) = cur;
@@ -32,16 +32,48 @@ BinaryNode<int>* ConvertToDuLinkedList(BinaryNode<int>* root) {
 	return head;
 }
 
+// TODO: 非递归版本
+
+BinaryNode<int>* ConvertToDuLinkedList_NonRecur(BinaryNode<int>* root) {
+	if (!root)
+		return nullptr;
+	BinaryNode<int>* null = nullptr;  // last刚开始应指向nullptr，但不能直接&(nullptr)，所以借用一个临时变量。
+	BinaryNode<int>** last = &null;
+	BinaryNode<int>* cur;
+	stack<decltype(root)> s;
+	while (root || !s.empty()) {
+		if (root) {
+			s.push(root);
+			root = root->left;
+		}
+		else {
+			root = s.top();
+			cur = root;
+			s.pop();
+			root = root->right;
+			cur->left = (*last);
+			if (*last)
+				(*last)->right = cur;
+			(*last) = cur;
+		}
+	}
+	auto head = (*last);
+	while (head&&head->left)
+		head = head->left;
+	return head;
+}
+
 int main() {
 	vector<int> tree{ 10,6,14,4,8,12,16 };
 	BinaryNode<int>* root = new BinaryNode<int>;
 	BuildBTree(&root,tree);
-	auto head = ConvertToDuLinkedList(root);
+	auto head = ConvertToDuLinkedList_NonRecur(root);
 	while (head) {
 		cout << head->value << "->";
 		head = head->right;
 	}
 	cout << "null" << endl;
+	// 销毁双向链表
 	auto copy = head;
 	while (head) {
 		head = head->left;
