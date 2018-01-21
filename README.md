@@ -10,7 +10,7 @@
     + [Hihocoder](Algorithm_Problems/online_judge/hihocoder)
     + [Leetcode](Algorithm_Problems/online_judge/leetcode)
     + [PAT](Algorithm_Problems/online_judge/pat)
-    + [��ָoffer](Algorithm_Problems/online_judge/��ָoffter)
+    + [剑指offer](Algorithm_Problems/online_judge/剑指offter)
 - [Floder_of_Recruit](Algorithm_Problems/recruit_exam)
     + [MS_2017](Algorithm_Problems/recruit_exam/microsoft)
     + [NetEase_2017_Intern](Algorithm_Problems/recruit_exam/netease)
