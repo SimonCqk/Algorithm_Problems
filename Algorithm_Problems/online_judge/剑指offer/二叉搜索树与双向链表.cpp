@@ -32,7 +32,7 @@ BinaryNode<int>* ConvertToDuLinkedList(BinaryNode<int>* root) {
 	return head;
 }
 
-// TODO: 非递归版本
+// 非递归版本
 
 BinaryNode<int>* ConvertToDuLinkedList_NonRecur(BinaryNode<int>* root) {
 	if (!root)
