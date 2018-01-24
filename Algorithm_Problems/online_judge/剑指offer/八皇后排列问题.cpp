@@ -14,8 +14,8 @@
 constexpr int kChessBoard = 8;
 
 bool IsValid(const std::array<int, kChessBoard>& arr) {
-	for (size_t i = 0; i < arr.size(); ++i) {
-		size_t j = (i - arr[i]) >= 0 ? (i - arr[i]) : 0;
+	for (int i = 0; i < arr.size(); ++i) {  // i&j 都不能用size_t，会隐式转换 & 向下溢出.
+		int j = (i - arr[i]) >= 0 ? (i - arr[i]) : 0;
 		for (; j < arr.size(); ++j) {  // 检查左上-右下对角线
 			if (arr[j] == (j + arr[i] - i) && j != i)
 				return false;
@@ -32,7 +32,7 @@ bool IsValid(const std::array<int, kChessBoard>& arr) {
 int QueenPermutation(const int& count = kChessBoard) {
 	std::array<int, kChessBoard> queen;
 	for (int i = 0; i < kChessBoard; ++i)
-		queen[i] = i;
+		queen[i] = i;  // 初始化queen数组，使其最小升序排列。
 	int ans = 0;
 	if (IsValid(queen))
 		++ans;
