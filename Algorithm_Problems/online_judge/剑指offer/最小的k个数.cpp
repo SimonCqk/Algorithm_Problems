@@ -3,6 +3,7 @@
 */
 #include<vector>
 #include<random>
+#include<queue>
 
 using namespace std;
 
@@ -43,9 +44,34 @@ vector<int> GetKMinNumbers(vector<int> nums, const int& k) {
 	return vector<int>(nums.begin(), nums.begin() + k);
 }
 
+// priority_queue 的底层是最大堆
+// 所以可以用priority queue来维护
+vector<int> GetKMinNumbers_MaxHeap(const vector<int>& nums, const int& k) {
+	if (nums.size() <= k)
+		return nums;
+	std::priority_queue<int> heap;
+	for (auto start = nums.cbegin(); start != nums.cend(); ++start) {
+		if (heap.size() < k)
+			heap.push(*start);
+		else {
+			// 找到第一个比*start大的数，删除之
+			if ((*start) < heap.top()) {
+				heap.pop();
+				heap.push(*start);
+			}
+		}
+	}
+	vector<int> ans;
+	while (!heap.empty()) {
+		ans.push_back(heap.top());
+		heap.pop();
+	}
+	return std::move(ans);
+}
+
 int main() {
 	vector<int> nums = { 4,5,1,6,2,7,3,8 };
-	auto ans = GetKMinNumbers(nums, 3);
+	auto ans = GetKMinNumbers_MaxHeap(nums, 3);
 	for (auto&& i : ans)
 		std::printf("%d\n", i);
 	return 0;
