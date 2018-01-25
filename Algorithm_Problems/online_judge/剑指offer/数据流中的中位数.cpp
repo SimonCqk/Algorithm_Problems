@@ -17,7 +17,7 @@ public:
 		return left.size() + right.size();
 	}
 	void insert(T data) {
-		if (this->size() & 1) { // 奇数
+		if (this->size() & 1) { // 偶数
 			if (left.size() > 0 && data < left[0]) {
 				left.push_back(data);
 				std::push_heap(left.begin(), left.end(), less<T>()); // 插入最大堆中
@@ -26,14 +26,14 @@ public:
 				left.pop_back();
 			}
 			right.push_back(data);
-			std::push_heap(right.begin(), right.end(), greater<T>()); 
+			std::push_heap(right.begin(), right.end(), greater<T>());
 		}
 		else {
 			if (right.size() > 0 && data > right[0]) {
 				right.push_back(data);
 				std::push_heap(right.begin(), right.end(), greater<T>());
 				data = right[0];
-				std::pop_heap(right.begin(), right.end(), less<T>());
+				std::pop_heap(right.begin(), right.end(), greater<T>());
 				right.pop_back();
 			}
 			left.push_back(data);
