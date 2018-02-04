@@ -1,5 +1,6 @@
 #ifndef PRE_DEFINES_H
 #define PRE_DEFINES_H
+
 #include<vector>
 #include<iostream>
 #include<queue>
@@ -39,6 +40,18 @@ void PrintLinkedList(ListNode* head) {
 		head = head->next;
 		std::printf("%d ", head->value);
 	}
+}
+
+int GetLinkedListLength(ListNode* head) {
+	if (!head||!head->next) // head->next is the first element.
+		return 0;
+	auto head_copy = head->next;
+	int count = 0;
+	while (head_copy) {
+		++count;
+		head_copy = head_copy->next;
+	}
+	return count;
 }
 
 void DestoryLinkedList(ListNode* head) {
