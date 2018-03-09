@@ -19,36 +19,23 @@ public:
 			return { -1,-1 };
 		int start = 0, end = nums.size() - 1;
 		int mid;
-		// find start first
+		// find target first
 		while (start <= end) {
 			mid = (start + end) / 2;
 			if (nums[mid] < target)
 				start = mid + 1;
 			else if (nums[mid] > target)
 				end = mid - 1;
-			else {
-				while (mid > 0 && nums[mid - 1] == nums[mid])
-					--mid;
+			else
 				break;
-			}
 		}
-		if (nums[mid] != target)  // target not found
+		if (nums[mid] != target) // not found
 			return { -1,-1 };
-		// then find end 
-		int left = mid;
-		start = mid; end = nums.size() - 1;
-		while (start <= end) {
-			mid = (start + end) / 2;
-			if (nums[mid] < target)
-				start = mid + 1;
-			else if (nums[mid] > target)
-				end = mid - 1;
-			else {
-				while (mid + 1 < nums.size() && nums[mid + 1] == nums[mid])
-					++mid;
-				break;
-			}
-		}
-		return { left,mid };
+		start = end = mid;
+		while (start > 0 && nums[start - 1] == nums[start])
+			--start;
+		while (end < nums.size() - 1 && nums[end + 1] == nums[end])
+			++end;
+		return { start,end };
 	}
 };
