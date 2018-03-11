@@ -30,7 +30,25 @@ int LastRemaining(const int& n, const int& m) {
 	return (*current);
 }
 
+/*
+  数学规律推导：
+  n关于m的方程：f(n,m)
+  规律推导得:
+  f(n,m) =  0                (n=1)
+            [f(n-1,m)+m]%n   (n>1)
+*/
+
+int LastRemaining_math(const int& n, const int& m) {
+	if (n < 1 || m < 1)
+		return -1;
+	int last = 0;
+	for (int i = 2; i <= n; ++i)
+		last = (last + m) % i;
+	return last;
+}
+
 int main() {
 	std::printf("%d\n", LastRemaining(5, 3));
+	std::printf("%d\n", LastRemaining_math(5, 3));
 	return 0;
 }
