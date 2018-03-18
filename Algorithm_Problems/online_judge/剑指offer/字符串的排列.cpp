@@ -14,7 +14,6 @@ void Permutation(string str, const int& index) {
 		std::cout << str << std::endl;
 	else {
 		for (size_t i = index; i < str.size(); ++i) {
-			auto tmp = str[index];
 			std::swap(str[index], str[i]);
 			Permutation(str, index + 1);
 			std::swap(str[index], str[i]); // roll back to origin string
@@ -34,8 +33,8 @@ void Permutation(string str) {
 
 void Permutation_NonRecur(string str) {
 	str = std::move(str);
+	std::sort(str.begin(), str.end()); // 确保是最小字符串
 	std::cout << str << std::endl;
-	//std::sort(str.begin(), str.end()); // 确保是最小字符串
 	int end = str.size() - 1;
 	int pos = end; // 需要交换的点
 	int next, min; // 交换点的下一点，交换点之后比它大的最小点
@@ -57,7 +56,7 @@ void Permutation_NonRecur(string str) {
 }
 
 int main() {
-	string s = "abcd";
+	string s = "cba";
 	Permutation_NonRecur(s);
 	return 0;
 }
