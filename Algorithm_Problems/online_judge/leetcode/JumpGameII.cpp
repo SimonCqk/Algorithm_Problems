@@ -33,7 +33,7 @@ public:
 					return steps;
 				max_end = std::max(max_end, i + nums[i]);
 			}
-			start = end+1;
+			start = end + 1;
 			end = max_end;
 		}
 		return steps;
