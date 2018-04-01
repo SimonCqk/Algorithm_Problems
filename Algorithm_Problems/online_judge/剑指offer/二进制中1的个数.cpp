@@ -21,7 +21,7 @@ int NumOfOneInBinary(int num){
 int NumOfOneInBinary(int num){
     int count=0;
     int flag = 1;
-    while(num){
+    while(flag){
        if(flag&num)
         ++count;
        flag <<= 1; // 对于一个32位的int，必须循环32次才能结束(flag才为0)
