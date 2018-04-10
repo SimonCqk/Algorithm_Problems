@@ -1,10 +1,3 @@
-#include<vector>
-#include<string>
-#include<algorithm>
-#include<iostream>
-#include<set>
-
-using namespace std;
 
 
 int main() {
