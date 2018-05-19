@@ -48,15 +48,3 @@ public:
 		return head;
 	}
 };
-
-int main() {
-	ListNode* head = new ListNode(2); head->next = new ListNode(1);
-	Solution s;
-	head = s.partition(head, 2);
-	while (head) {
-		std::cout << head->val << ' ';
-		head = head->next;
-	}
-	std::cout << std::endl;
-	return 0;
-}
