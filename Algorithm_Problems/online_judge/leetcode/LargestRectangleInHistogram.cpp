@@ -17,6 +17,7 @@ Input: [2,1,5,6,2,3]
 Output: 10
 */
 #include<vector>
+#include<stack>
 #include<algorithm>
 
 using namespace std;
@@ -39,11 +40,29 @@ public:
 		}
 		return max_area;
 	}
-};
 
-int main() {
-	vector<int> heights{ 2,1,5,6,2,3 };
-	Solution s;
-	std::printf("%d\n", s.largestRectangleArea(heights));
-	return 0;
-}
+	int largestRectangleArea(vector<int> heights) {
+		// much faster and elegant than the above one
+
+		// push back a extra element stands for the right index of last height
+		heights.push_back(0);
+		int size = heights.size(), max_area = 0;
+		// this stack contains the left elements of 'current height'.
+		// the index on the top of stack is the first index on the left higher than 
+		// current height.
+		stack<int> index;
+		for (int i = 0; i < size; i++) {
+			// if current height is higher than the bar on the top of stack
+			while (!index.empty() && heights[index.top()] >= heights[i]) {
+				int h = heights[index.top()];
+				index.pop();
+
+				int sidx = index.size() > 0 ? index.top() : -1;
+				if (h * (i - sidx - 1) > max_area)
+					max_area = h * (i - sidx - 1);
+			}
+			index.push(i);
+		}
+		return max_area;
+	}
+};
