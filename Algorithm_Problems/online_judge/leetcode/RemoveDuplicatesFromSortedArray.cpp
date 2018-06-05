@@ -14,9 +14,6 @@ It doesn't matter what you leave beyond the new length.
 class Solution {
 public:
 	int removeDuplicates(vector<int>& nums) {
-		int size = nums.size();
-		if (!size)
-			return 0;
 		int count = 0;
 		for (auto& num : nums) {
 			if (num != nums[count]) {
