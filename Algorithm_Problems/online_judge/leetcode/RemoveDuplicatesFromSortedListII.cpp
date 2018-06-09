@@ -34,7 +34,7 @@ public:
 				int tmp_val = (*cur)->val;
 				while (tmp && (tmp_val == tmp->val)) {
 					next = tmp->next;
-					delete tmp; tmp = nullptr;
+					delete tmp; 
 					tmp = next;
 				}
 				*cur = tmp;
