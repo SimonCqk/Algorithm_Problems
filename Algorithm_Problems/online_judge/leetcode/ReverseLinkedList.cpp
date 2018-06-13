@@ -13,11 +13,10 @@ Reverse a singly linked list.
 
 class Solution {
 public:
-	ListNode* reverseList(ListNode* head) {
+	ListNode * reverseList(ListNode* head) {
 		ListNode* prev = nullptr;
 		ListNode* first = head;
-		while (first)
-		{
+		while (first) {
 			auto tmp = first->next;
 			first->next = prev;
 			prev = first;
@@ -28,7 +27,7 @@ public:
 };
 
 ListNode* reverseList(ListNode* head) {
-	if (!head || !head->next) 
+	if (!head || !head->next)
 		return head;
 	ListNode* p = reverseList(head->next);
 	head->next->next = head;

@@ -12,11 +12,13 @@ Merge k sorted linked lists and return it as one sorted list. Analyze and descri
 */
 #include<vector>
 #include<iostream>
+
 struct ListNode {
 	int val;
 	ListNode *next;
 	ListNode(int x) : val(x), next(NULL) {}
 };
+
 using namespace std;
 
 class Solution {
