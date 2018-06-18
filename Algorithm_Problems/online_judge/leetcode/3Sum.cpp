@@ -19,17 +19,17 @@ public:
 		sort(nums.begin(), nums.end());
 		int left = 0, right = nums.size() - 1;
 		set<vector<int>> ans_set;
-		for (; left<right; ++left) {
+		for (; left < right; ++left) {
 			int dest = -nums[left];
 			for (int i = left + 1, j = right; i < j; ) {
 				int sum = nums[i] + nums[j];
-				if (sum>dest)
+				if (sum > dest)
 					--j;
-				else if (sum<dest)
+				else if (sum < dest)
 					++i;
 				else {
 					int m = nums[i], n = nums[j];
-					vector<int> three = { m,n,-dest };
+					vector<int> three{ m,n,-dest };
 					ans_set.insert(three);
 					while (i < j && nums[i] == m)
 						i++;
@@ -37,7 +37,7 @@ public:
 						j--;
 				}
 			}
-			while (left<right && nums[left] == nums[left + 1])
+			while (left < right && nums[left] == nums[left + 1])
 				++left;
 		}
 		vector<vector<int>> ans(ans_set.begin(), ans_set.end());
