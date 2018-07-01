@@ -1,43 +1,23 @@
 #include <iostream>
-#include <fstream>
 #include <string>
-#include <windows.h>
-#include <gdiplus.h>
-#pragma comment(lib, "gdiplus.lib")
+#include<limits>
+#include<cmath>
 
 using namespace std;
-using namespace Gdiplus;
 
+static unsigned long rev(unsigned long v) {
+	unsigned long s = 8 * sizeof(v); // bit size; must be power of 2
+	unsigned long mask = ~0;
+	while ((s >>= 1) > 0) {
+		mask ^= (mask << s);
+		v = ((v >> s) & mask) | ((v << s) & ~mask);
+	}
+	return v;
+}
 
-int main()
-{
-	GdiplusStartupInput gdiplusstartupinput;
-	ULONG_PTR gdiplustoken;
-	GdiplusStartup(&gdiplustoken, &gdiplusstartupinput, nullptr);
-
-	wstring infilename(L"atom.jpg");
-	string outfilename("color.txt");
-	//¶ÁÍ¼Æ¬
-	Bitmap* bmp = new Bitmap(infilename.c_str());
-	UINT height = bmp->GetHeight();
-	UINT width = bmp->GetWidth();
-	cout << "width " << width << ", height " << height << endl;
-
-	Color color;
-	ofstream fout(outfilename.c_str());
-
-	for (int y = 0; y < height; y++)
-		for (int x = 0; x < width; x++) {
-			bmp->GetPixel(x, y, &color);
-			fout << x << "	" << y << "	"
-				<< (int)color.GetRed() << "	"
-				<< (int)color.GetGreen() << "	"
-				<< (int)color.GetBlue() << endl;
-		}
-
-	fout.close();
-
-	delete bmp;
-	GdiplusShutdown(gdiplustoken);
+int main() {
+	cout << std::numeric_limits<int>::min() << endl;
+	cout << std::numeric_limits<int>::max() << endl;
+	cout << std::log2(std::numeric_limits<int>::max()) << endl;
 	return 0;
 }
