@@ -18,6 +18,5 @@ static unsigned long rev(unsigned long v) {
 int main() {
 	cout << std::numeric_limits<int>::min() << endl;
 	cout << std::numeric_limits<int>::max() << endl;
-	cout << std::log2(std::numeric_limits<int>::max()) << endl;
 	return 0;
 }
