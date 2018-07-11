@@ -44,4 +44,24 @@ public:
 			inorder(nums, cur->right);
 	}
 
+	vector<int> inorderTraversalNonrecursive(TreeNode* root) {
+		if (!root)
+			return {};
+		vector<int> nums;
+		stack<TreeNode*> s;
+		TreeNode* cur = root;
+		while (!s.empty() || cur) {
+			if (cur) {
+				s.push(cur);
+				cur = cur->left;
+			}
+			else {
+				cur = s.top();
+				s.pop();
+				nums.push_back(cur->val);
+				cur = cur->right;
+			}
+		}
+		return nums;
+	}
 };
