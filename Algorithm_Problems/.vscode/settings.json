@@ -3,6 +3,8 @@
         "chrono": "cpp",
         "xhash": "cpp",
         "xtree": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "xiosbase": "cpp",
+        "utility": "cpp"
     }
 }
