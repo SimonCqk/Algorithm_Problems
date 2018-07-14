@@ -5,6 +5,12 @@
         "xtree": "cpp",
         "xutility": "cpp",
         "xiosbase": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "queue": "cpp",
+        "stack": "cpp",
+        "vector": "cpp",
+        "xstring": "cpp"
     }
 }
